@@ -6,10 +6,28 @@ CREATE TABLE Movie(
 	company varchar(50)
 );
 
-CREATE TABLE Actor();
-CREATE TABLE Sales();
-CREATE TABLE Director();
-CREATE TABLE MovieGenre();
+CREATE TABLE Actor(
+	id int,
+	last varchar(20),
+	first varchar(20),
+	sex, varchar(6),
+	dob, DATE,
+	dod, DATE
+);
+CREATE TABLE Sales(
+	mid int,
+	ticketsSold int,
+	totalIncome int
+);
+CREATE TABLE Director(
+	id int,
+	last varchar(20),
+	first varchar(20),
+	dob, DATE,
+	dod, DATE
+);
+CREATE TABLE MovieGenre(
+);
 CREATE TABLE MovieDirector();
 CREATE TABLE MovieActor();
 CREATE TABLE MovieRating();
