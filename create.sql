@@ -6,9 +6,29 @@ CREATE TABLE Movie(
 	company varchar(50)
 );
 
-CREATE TABLE Actor();
-CREATE TABLE Sales();
-CREATE TABLE Director();
+CREATE TABLE Actor(
+	id int,
+	last varchar(20),
+	first varchar(20),
+	sex, varchar(6),
+	dob, DATE,
+	dod, DATE
+);
+
+CREATE TABLE Sales(
+	mid int,
+	ticketsSold int,
+	totalIncome int
+);
+
+CREATE TABLE Director(
+	id int,
+	last varchar(20),
+	first varchar(20),
+	dob, DATE,
+	dod, DATE
+);
+
 CREATE TABLE MovieGenre(
 	mid int,
 	genre varchar(20)
@@ -41,6 +61,7 @@ CREATE TABLE Review(
 
 CREATE TABLE MaxPersonID(id int);
 CREATE TABLE MaxMovieID(id int);
+
 
 LOAD DATA LOCAL INFILE 'www/data/movie.del' INTO TABLE Movie
 FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"';
