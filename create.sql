@@ -9,13 +9,38 @@ CREATE TABLE Movie(
 CREATE TABLE Actor();
 CREATE TABLE Sales();
 CREATE TABLE Director();
-CREATE TABLE MovieGenre();
-CREATE TABLE MovieDirector();
-CREATE TABLE MovieActor();
-CREATE TABLE MovieRating();
-CREATE TABLE Review();
-CREATE TABLE MaxPersonID();
-CREATE TABLE MaxMovieID();
+CREATE TABLE MovieGenre(
+	mid int,
+	genre varchar(20)
+);
+
+CREATE TABLE MovieDirector(
+	mid: int,
+	did: int
+);
+
+CREATE TABLE MovieActor(
+	mid: int,
+	aid: int,
+	role varchar(50)
+);
+
+CREATE TABLE MovieRating(
+	mid int,
+	imdb int,
+	rot int
+);
+
+CREATE TABLE Review(
+	name varchar(20),
+	time timestamp,
+	mid int,
+	rating int,
+	comment varchar(500)
+);
+
+CREATE TABLE MaxPersonID(id int);
+CREATE TABLE MaxMovieID(id int);
 
 LOAD DATA LOCAL INFILE 'www/data/movie.del' INTO TABLE Movie
 FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"';
