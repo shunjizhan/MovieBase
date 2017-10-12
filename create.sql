@@ -10,9 +10,9 @@ CREATE TABLE Actor(
 	id int,
 	last varchar(20),
 	first varchar(20),
-	sex, varchar(6),
-	dob, DATE,
-	dod, DATE
+	sex varchar(6),
+	dob DATE,
+	dod DATE
 );
 
 CREATE TABLE Sales(
@@ -25,8 +25,8 @@ CREATE TABLE Director(
 	id int,
 	last varchar(20),
 	first varchar(20),
-	dob, DATE,
-	dod, DATE
+	dob DATE,
+	dod DATE
 );
 
 CREATE TABLE MovieGenre(
@@ -35,13 +35,13 @@ CREATE TABLE MovieGenre(
 );
 
 CREATE TABLE MovieDirector(
-	mid: int,
-	did: int
+	mid int,
+	did int
 );
 
 CREATE TABLE MovieActor(
-	mid: int,
-	aid: int,
+	mid int,
+	aid int,
 	role varchar(50)
 );
 
