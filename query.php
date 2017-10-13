@@ -27,7 +27,6 @@
 	}
 	tr:hover {
 		background-color: #ABEBC6;
-		cursor: pointer;
 	}
 </style>
 <body>
