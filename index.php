@@ -1,23 +1,35 @@
 <html>
-<head><title>CS143 Project 1B Demo</title></head>
+<head><title>CS143 Project 1B</title></head>
+<style type="text/css">
+	body {
+		position: relative;
+		left: 20%;
+		top: 100px;
+		width: 60%;
+		text-align: center;
+		margin: 0;
+		/*border: 1px solid red;*/
+	}
+	textarea {
+		margin: 10px;
+	}
+	input {
+		font-size: 200%;
+	}
+</style>
 <body>
-<p>
-Due to security concerns, this demo does not follow the spec exactly.
-It is just to give you a rough idea of how your code should work.</p>
 
-<p>Please do not run a complex query here. You may kill the server. </p>
-Type an SQL query in the following box: <p>
-Example: <tt>SELECT * FROM Actor WHERE id=10;</tt><br />
-
-<form action="." method="GET">
-<textarea name="query" cols="60" rows="8"></textarea><br />
-<input type="submit" value="Submit" />
+input your query here
+<form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
+	<textarea name="query" cols="80" rows="10"></textarea><br />
+	<input type="submit" value="Submit" />
 </form>
 
-<p><small>Note: tables and fields are case sensitive. All tables in Project 1B are availale.</small></p>
-
 <?php
-echo "My first PHP script!";
+	if ($_SERVER["REQUEST_METHOD"] == "POST") {
+		$query = $_REQUEST['query'];
+		echo $query;
+	}
 ?>
 
 </body>
