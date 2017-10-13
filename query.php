@@ -50,8 +50,16 @@ input your query here
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		$query = $_POST['query'];
 		$result = mysql_query($query, $db);
+     		
+        print "<table>";
+   
+        print "<tr>";
+        for($i = 0; $i < mysql_num_fields($result); $i++) {
+            $field_info = mysql_fetch_field($result, $i);
+            echo "<th>{$field_info->name}</th>";
+        }
+        print "</tr>";
 
-		print "<table>";
 		while($row = mysql_fetch_row($result)) {
 			print "<tr>";
 			for($i = 0; $i < count($row); $i++) {
