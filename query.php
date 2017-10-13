@@ -63,7 +63,9 @@ input your query here
 		while($row = mysql_fetch_row($result)) {
 			print "<tr>";
 			for($i = 0; $i < count($row); $i++) {
-				print "<th>$row[$i]</th>";
+				if ($row[$i] != null) {
+					print "<th>$row[$i]</th>";
+				}
 			}
 			print "</tr>";
 		}
