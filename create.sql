@@ -15,7 +15,6 @@ CREATE TABLE Actor(
 	dob DATE NOT NULL,
 	dod DATE,
 	PRIMARY KEY (id),
-	CHECK(dod = null or dod > dob)
 );
 
 CREATE TABLE Sales(
@@ -34,7 +33,6 @@ CREATE TABLE Director(
 	dob DATE NOT NULL,
 	dod DATE,
 	PRIMARY KEY (id),
-	CHECK(dod = null or dod > dob)
 );
 
 CREATE TABLE MovieGenre(
