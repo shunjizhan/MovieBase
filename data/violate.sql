@@ -6,7 +6,7 @@ insert into	Movie value(489,"Blue Hawaii",1961,"PG","Paramount Pictures"); -- vi
 -- For Actor
 update Actor set dob=NULL; -- violates the NOT NULL constraints
 
-insert into Actor value (65787,"Weinstock","Lotus","Female",19430129,19970831); -- violates the primary key constraints
+insert into Actor value (246,"Adams","Edie","Female",19270416,\N); -- violates the primary key constraints
 
 
 -- For Sales

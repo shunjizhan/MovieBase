@@ -14,7 +14,7 @@ CREATE TABLE Actor(
 	sex varchar(6),
 	dob DATE NOT NULL,
 	dod DATE,
-	PRIMARY KEY (id),
+	PRIMARY KEY (id)
 );
 
 CREATE TABLE Sales(
@@ -32,7 +32,7 @@ CREATE TABLE Director(
 	first varchar(20),
 	dob DATE NOT NULL,
 	dod DATE,
-	PRIMARY KEY (id),
+	PRIMARY KEY (id)
 );
 
 CREATE TABLE MovieGenre(
