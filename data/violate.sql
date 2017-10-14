@@ -9,6 +9,7 @@ update Actor set dob=NULL; -- violates the NOT NULL constraints
 insert into Actor value (246,"Adams","Edie","Female",19270416,\N); -- violates the primary key constraints
 
 
+
 -- For Sales
 insert into Sales value (1111,1174130,17611950); -- violate violates the primary key constraints
 
