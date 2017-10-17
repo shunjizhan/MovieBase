@@ -6,10 +6,11 @@ SELECT a.title from (SELECT title, ticketsSold FROM Movie m, Sales s
 WHERE s.mid = m.id and s.ticketsSold > 900000) a;
 -- find all the titles of the movies which sold more than 900000 tickets
 
-SELECT d.last, d.id, md.mid, m.id from Director d, MovieDirector md, Movie m
+select count(*) from 
+(SELECT d.last, d.id, md.mid, title from Director d, MovieDirector md, Movie m
 WHERE d.id = md.did and md.mid = m.id 
-group by d.id 
-having count(*) > 4;
+group by m.id 
+having count(*) > 4) x
 -- Give the count of all the directors who directed at least 4 movies.
 
 SELECT last as "last name" from Actor
