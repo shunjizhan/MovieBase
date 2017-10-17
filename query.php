@@ -45,7 +45,7 @@ input your query here
 		exit(1);
 	}
 
-	mysql_select_db("TEST", $db);
+	mysql_select_db("CS143", $db);
 
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		$query = $_POST['query'];
