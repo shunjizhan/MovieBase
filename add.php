@@ -45,29 +45,30 @@
 		$fname = $_GET["fname"];
 		$lname = $_GET["lname"];
     $gender = $_GET["gender"];
-		$dateb = $_GET["dateb"];
-		$dated = $_GET["dated"];
+		$dateb = $_GET["dateb"]; $dateb = str_replace('-', '', $dateb);
+		$dated = $_GET["dated"]; $dated = str_replace('-', '', $dated);
 
 		echo $fname, $lname, $gender, $dateb, $dated;
-		// $result = mysql_query($query, $db);
-		//
-    //     print "<table>";
-		//
-    //     print "<tr>";
-    //     for($i = 0; $i < mysql_num_fields($result); $i++) {
-    //         $field_info = mysql_fetch_field($result, $i);
-    //         echo "<th>{$field_info->name}</th>";
-    //     }
-    //     print "</tr>";
-		//
-		// while($row = mysql_fetch_row($result)) {
-		// 	print "<tr>";
-		// 	for($i = 0; $i < count($row); $i++) {
-		// 		print "<th>$row[$i]</th>";
-		// 	}
-		// 	print "</tr>";
-		// }
-		// print "</table>";
+    $query = "INSERT INTO Actor(id,last,first,sex,dob,dod) VALUES (69999, '{$fname}', '{$lname}', '{$gender}', {$dateb}, {$dated});";
+		$result = mysql_query($query, $db);
+
+        print "<table>";
+
+        print "<tr>";
+        for($i = 0; $i < mysql_num_fields($result); $i++) {
+            $field_info = mysql_fetch_field($result, $i);
+            echo "<th>{$field_info->name}</th>";
+        }
+        print "</tr>";
+
+		while($row = mysql_fetch_row($result)) {
+			print "<tr>";
+			for($i = 0; $i < count($row); $i++) {
+				print "<th>$row[$i]</th>";
+			}
+			print "</tr>";
+		}
+		print "</table>";
 
 	mysql_close($db)
 ?>
