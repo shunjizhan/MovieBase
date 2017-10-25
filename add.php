@@ -64,11 +64,14 @@
 	}
 
 	mysql_select_db("CS143", $db);
+    $type = $_GET["a/d"];
 
 		$fname = $_GET["fname"];
 		$lname = $_GET["lname"];
     $gender = $_GET["gender"];
-		$dateb = $_GET["dateb"]; $dateb = str_replace('-', '', $dateb);
+		$dateb = $_GET["dateb"];
+
+    $dateb = str_replace('-', '', $dateb);
     if(!isset($dateb) || trim($dateb) == ''){
       $datab = 'NULL';
     }
@@ -83,31 +86,22 @@
     $row = mysql_fetch_array($rowSQL);
     $largestNumber = $row["max"];
 
-    $query = "INSERT INTO Actor(id,last,first,sex,dob,dod)
-              VALUES ($largestNumber+1, '{$lname}', '{$fname}', '{$gender}', '{$dateb}', '{$dated}');
-              ";
+    if ($type == "Actor") {
+      $query = "INSERT INTO Actor
+                VALUES ($largestNumber+1, '{$lname}', '{$fname}', '{$gender}', '{$dateb}', '{$dated}');
+                ";
+    } else {
+      $query = "INSERT INTO Director
+                VALUES ($largestNumber+1, '{$lname}', '{$fname}', '{$dateb}', '{$dated}');
+                ";
+    }
+
     $query2 = "UPDATE MaxPersonID SET id = $largestNumber+1;";
-    echo $query;
-		$result = mysql_query($query, $db);
+
+
+    // echo $type;
+		mysql_query($query, $db);
     mysql_query($query2, $db);
-
-        print "<table>";
-
-        print "<tr>";
-        for($i = 0; $i < mysql_num_fields($result); $i++) {
-            $field_info = mysql_fetch_field($result, $i);
-            echo "<th>{$field_info->name}</th>";
-        }
-        print "</tr>";
-
-		while($row = mysql_fetch_row($result)) {
-			print "<tr>";
-			for($i = 0; $i < count($row); $i++) {
-				print "<th>$row[$i]</th>";
-			}
-			print "</tr>";
-		}
-		print "</table>";
 
 	mysql_close($db)
 ?>
