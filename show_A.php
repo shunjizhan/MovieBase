@@ -8,7 +8,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Show Actor Information</title>
     <link href="css/all.css" rel="stylesheet">
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet"><link href="css/fontAwesome/css/font-awesome.css" rel="stylesheet">
 
   <body>
     <?php include("navigation.php"); ?>

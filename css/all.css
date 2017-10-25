@@ -17,3 +17,13 @@ h1, h2, h3, h4, h5 {
   left: 18%;
   position: relative;
 }
+
+.add, .show, .search { color: black; }
+
+.add i { color: #28B463; }
+.show i { color: #0288D1; }
+.search i { color: #F39C12; }
+
+.add:hover { color: #28B463; background-color: rgba(40,180,99, 0.05) !important; }
+.show:hover { color: #0288D1; background-color: rgba(2,136,209, 0.05) !important; }
+.search:hover { color: #F39C12; background-color: rgba(243,156,18, 0.05) !important; }
