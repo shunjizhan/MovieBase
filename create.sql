@@ -1,10 +1,10 @@
 CREATE TABLE Movie(
-	id int, 
-	title varchar(100) NOT NULL, 
-	year int, 
-	rating varchar(10), 
+	id int,
+	title varchar(100) NOT NULL,
+	year int,
+	rating varchar(10),
 	company varchar(50),
-	PRIMARY KEY (id)  -- id must be unique		
+	PRIMARY KEY (id)  -- id must be unique
 ) ENGINE=INNODB;
 
 CREATE TABLE Actor(
@@ -81,4 +81,3 @@ CREATE TABLE Review(
 
 CREATE TABLE MaxPersonID(id int);
 CREATE TABLE MaxMovieID(id int);
-

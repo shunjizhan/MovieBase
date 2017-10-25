@@ -1,18 +1,27 @@
+<h3>Add new Actor/Director</h3>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>CS143 Project 1c</title>
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Add New Movie</title>
-    <link href="css/all.css" rel="stylesheet">
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/project1c.css" rel="stylesheet">
 
   <body>
 
-<h3>Add new Actor/Director</h3>
+    <!-- <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header navbar-defalt">
+          <a class="navbar-brand" href="index.php">CS143 DataBase Query System (Demo)</a>
+        </div>
+      </div>
+    </nav> -->
+
+    <div class="container">
+      <div class="row">
 <form method = "GET" action="add.php">
   <label for="a/d">Add:</label>
   <select name="a/d">
@@ -45,8 +54,6 @@
     </div>
     <button type="submit" class="btn btn-default">Add!</button>
 </form>
-</body>
-</html>
 
 <?php
 	$db = mysql_connect("localhost", "cs143", "");
@@ -62,10 +69,24 @@
 		$lname = $_GET["lname"];
     $gender = $_GET["gender"];
 		$dateb = $_GET["dateb"]; $dateb = str_replace('-', '', $dateb);
+    if(!isset($dateb) || trim($dateb) == ''){
+      $datab = 'NULL';
+    }
 		$dated = $_GET["dated"]; $dated = str_replace('-', '', $dated);
+    if(!isset($dated) || trim($dated)== ''){
+      $datad = 'NULL';
+    }
 
 		echo $fname, $lname, $gender, $dateb, $dated;
-    $query = "INSERT INTO Actor(id,last,first,sex,dob,dod) VALUES (69999, '{$fname}', '{$lname}', '{$gender}', {$dateb}, {$dated});";
+    //get the largest id number
+    $rowSQL = mysql_query("SELECT MAX(id) AS max FROM Actor;");
+    $row = mysql_fetch_array($rowSQL);
+    $largestNumber = $row["max"];
+
+    $query = "INSERT INTO Actor(id,last,first,sex,dob,dod)
+              VALUES ($largestNumber+1, '{$lname}', '{$fname}', '{$gender}', '{$dateb}', '{$dated}');
+              ";
+    echo $query;
 		$result = mysql_query($query, $db);
 
         print "<table>";
