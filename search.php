@@ -7,23 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Show Actor Information</title>
-    <link href="css/all.css" rel="stylesheet">
     <link href="css/bootstrap.min.css" rel="stylesheet">
-  </head>
-  <style type="text/css">
-	table {
-    	border-collapse: collapse;
-	}
-	table, th {
-	    border: 1px solid black;
-	}
-	th {
-		padding: 5px;
-	}
-	tr:hover {
-		background-color: #ABEBC6;
-	}
-</style>
+    <link href="css/fontAwesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/all.css" rel="stylesheet">
+
   <body>
     <?php include("navigation.php"); ?>
 

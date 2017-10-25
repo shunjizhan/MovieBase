@@ -8,7 +8,7 @@
     <title>CS143 Project 1c</title>
 
     <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet"><link href="css/fontAwesome/css/font-awesome.css" rel="stylesheet">
     <link href="css/project1c.css" rel="stylesheet">
 
   <body>

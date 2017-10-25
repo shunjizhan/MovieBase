@@ -16,6 +16,7 @@
     <title>Add new Actor/Director</title>
     <link href="css/all.css" rel="stylesheet">
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/fontAwesome/css/font-awesome.css" rel="stylesheet">
 
   <body>
     <?php include("navigation.php"); ?>
