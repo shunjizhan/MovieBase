@@ -93,7 +93,7 @@
 
 		echo "$title $company $year $rate $dated $genre";
     //get the largest id number
-    $rowSQL = mysql_query("SELECT MAX(id) AS max FROM Movie;");
+    $rowSQL = mysql_query("SELECT MAX(id) AS max FROM MaxMovieID;");
     $row = mysql_fetch_array($rowSQL);
     $largestNumber = $row["max"];
     echo $largestNumber;
@@ -103,8 +103,10 @@
               ";
     $query2 = "INSERT INTO MovieGenre(mid, genre)
               VALUES ($largestNumber+1, '{$genre}');";
+    $query3 = "UPDATE MaxMovieID SET id = $largestNumber+1;";
 		$result = mysql_query($query, $db);
-    $result2 = mysql_query($query2, $db);
+    mysql_query($query2, $db);
+    mysql_query($query3, $db);
     echo $query;
 
         print "<table>";

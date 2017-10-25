@@ -79,15 +79,17 @@
 
 		echo $fname, $lname, $gender, $dateb, $dated;
     //get the largest id number
-    $rowSQL = mysql_query("SELECT MAX(id) AS max FROM Actor;");
+    $rowSQL = mysql_query("SELECT MAX(id) AS max FROM MaxPersonID;");
     $row = mysql_fetch_array($rowSQL);
     $largestNumber = $row["max"];
 
     $query = "INSERT INTO Actor(id,last,first,sex,dob,dod)
               VALUES ($largestNumber+1, '{$lname}', '{$fname}', '{$gender}', '{$dateb}', '{$dated}');
               ";
+    $query2 = "UPDATE MaxPersonID SET id = $largestNumber+1;";
     echo $query;
 		$result = mysql_query($query, $db);
+    mysql_query($query2, $db);
 
         print "<table>";
 

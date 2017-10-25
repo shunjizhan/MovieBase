@@ -1,5 +1,5 @@
 CREATE TABLE Movie(
-	id int,
+	id int unique,
 	title varchar(100) NOT NULL,
 	year int,
 	rating varchar(10),
@@ -8,7 +8,7 @@ CREATE TABLE Movie(
 ) ENGINE=INNODB;
 
 CREATE TABLE Actor(
-	id int,
+	id int unique,
 	last varchar(20),
 	first varchar(20),
 	sex varchar(6),
