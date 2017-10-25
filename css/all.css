@@ -1,9 +1,19 @@
-body {
-  width: 60%;
-  left: 20%;
-  position: relative;
+h1, h2, h3, h4, h5 {
+  text-align: center;
 }
 
-h3 {
-  text-align: center;
+.nav_container {
+  position: absolute;
+  width: 18%;
+  height: 100%;
+  left: 0;
+  padding-left: 1%;
+  border-right: 1px solid black;
+}
+
+.main_container {
+  padding: 0 10%;
+  width: 65%;
+  left: 18%;
+  position: relative;
 }

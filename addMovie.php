@@ -6,12 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Add New Movie</title>
+    <title>Add New Actor/Director</title>
     <link href="css/all.css" rel="stylesheet">
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
   <body>
+    <?php include("navigation.php"); ?>
 
+    <div class="main_container">
     <h3>Add New Movie</h3>
     <form method="GET" action="#">
         <div class="form-group">
@@ -61,6 +63,7 @@
         </div>
         <button type="submit" class="btn btn-default">Add!</button>
     </form>
+  </div>
 
 
 </body>
