@@ -18,7 +18,6 @@
     <h3>Show Actor Information</h3>
     <form method="GET" action="#">
         <div class="form-group">
-          <label for="search">Search:</label>
           <input type="text" class="form-control" name="search">
         </div>
         <button type="submit" class="btn btn-default">Search</button>

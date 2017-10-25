@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Show Movie Information</title>
+    <title>Show Actor Information</title>
     <link href="css/all.css" rel="stylesheet">
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
@@ -15,7 +15,7 @@
 
     <div class="main_container">
 
-    <h3>Show Movie Information</h3>
+    <h3>Search Actor and Movie Info</h3>
     <form method="GET" action="#">
         <div class="form-group">
           <input type="text" class="form-control" name="search">
