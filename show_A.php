@@ -43,8 +43,12 @@
           $query = "select * from Actor where id='{$id}'";
           $result = mysql_query($query, $db);
 
-          $table = new Table($result, 0);
+          // $query2 ="select MovieActor.role as Role, Movie.title as MovieTitle from MovieActor where aid='{$id}' INNER JOIN Movie On Movie.id = MovieActor.mid ";
+          $query2 = "select role as Role, title as 'Movie Title' from MovieActor ma, Movie m where ma.aid='{$id}' and m.id = ma.aid";
+          $result2 =mysql_query($query2, $db);
 
+          $table = new Table($result, 0);
+          $table2 = new Table($result2, 0);
 
         } else if($search != NULL) {
         print "<h4><b>Matching Actors Are:</b></h4>";
