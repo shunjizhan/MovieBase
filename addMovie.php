@@ -64,69 +64,48 @@
         </div>
         <button type="submit" class="btn btn-default">Add!</button>
     </form>
+
+    <?php
+    	$db = mysql_connect("localhost", "cs143", "");
+    	if(!$db) {
+    		$errmsg = mysql_error($db);
+    		print "Connection failed: $errmsg <br>";
+    		exit(1);
+    	}
+
+    	mysql_select_db("CS143", $db);
+
+    		$title = $_GET["title"];
+    		$company = $_GET["company"];
+        $year = $_GET["year"];
+    		$rate = $_GET["rate"];
+        $genre = "";
+
+        foreach($_GET["genre"] as $g) {
+          $genre .= $g;
+        }
+
+        //get the largest id number
+        $rowSQL = mysql_query("SELECT MAX(id) AS max FROM MaxMovieID;");
+        $row = mysql_fetch_array($rowSQL);
+        $largestNumber = $row["max"];
+        // echo $largestNumber;
+
+        $query = "INSERT INTO Movie(id,title,year,rating,company)
+                  VALUES ($largestNumber+1, '{$title}', {$year}, '{$rate}', '{$company}');
+                  ";
+        $query2 = "INSERT INTO MovieGenre(mid, genre)
+                  VALUES ($largestNumber+1, '{$genre}');";
+        $query3 = "UPDATE MaxMovieID SET id = $largestNumber+1;";
+    		$result = mysql_query($query, $db);
+        mysql_query($query2, $db);
+        mysql_query($query3, $db);
+        print "add success: $title $company $year $rate $genre";
+
+    	mysql_close($db)
+    ?>
   </div>
 
 
 </body>
 </html>
-
-
-
-<?php
-	$db = mysql_connect("localhost", "cs143", "");
-	if(!$db) {
-		$errmsg = mysql_error($db);
-		print "Connection failed: $errmsg <br>";
-		exit(1);
-	}
-
-	mysql_select_db("CS143", $db);
-
-		$title = $_GET["title"];
-		$company = $_GET["company"];
-    $year = $_GET["year"];
-		$rate = $_GET["rate"];
-    $genre = "";
-
-    foreach($_GET["genre"] as $g) {
-      $genre .= $g;
-    }
-
-		echo "$title $company $year $rate $dated $genre";
-    //get the largest id number
-    $rowSQL = mysql_query("SELECT MAX(id) AS max FROM MaxMovieID;");
-    $row = mysql_fetch_array($rowSQL);
-    $largestNumber = $row["max"];
-    echo $largestNumber;
-
-    $query = "INSERT INTO Movie(id,title,year,rating,company)
-              VALUES ($largestNumber+1, '{$title}', {$year}, '{$rate}', '{$company}');
-              ";
-    $query2 = "INSERT INTO MovieGenre(mid, genre)
-              VALUES ($largestNumber+1, '{$genre}');";
-    $query3 = "UPDATE MaxMovieID SET id = $largestNumber+1;";
-		$result = mysql_query($query, $db);
-    mysql_query($query2, $db);
-    mysql_query($query3, $db);
-    echo $query;
-
-        print "<table>";
-
-        print "<tr>";
-        for($i = 0; $i < mysql_num_fields($result); $i++) {
-            $field_info = mysql_fetch_field($result, $i);
-            echo "<th>{$field_info->name}</th>";
-        }
-        print "</tr>";
-
-		while($row = mysql_fetch_row($result)) {
-			print "<tr>";
-			for($i = 0; $i < count($row); $i++) {
-				print "<th>$row[$i]</th>";
-			}
-			print "</tr>";
-		}
-		print "</table>";
-
-	mysql_close($db)
-?>

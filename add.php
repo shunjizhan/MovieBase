@@ -80,7 +80,6 @@
       $datad = 'NULL';
     }
 
-		echo $fname, $lname, $gender, $dateb, $dated;
     //get the largest id number
     $rowSQL = mysql_query("SELECT MAX(id) AS max FROM MaxPersonID;");
     $row = mysql_fetch_array($rowSQL);
@@ -102,6 +101,8 @@
     // echo $type;
 		mysql_query($query, $db);
     mysql_query($query2, $db);
+
+    print "add success: $fname $lname $gender $dateb $dated";
 
 	mysql_close($db)
 ?>
