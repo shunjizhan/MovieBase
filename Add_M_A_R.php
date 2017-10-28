@@ -32,7 +32,7 @@
                 if(mysql_num_rows($sql)){
                 $select= '<select class="form-control" name="title">';
                 while($rs=mysql_fetch_array($sql)){
-                      $select.='<option value="'.$rs['title'].'">'.$rs['title'].'</option>';
+                      $select.='<option value="">'.$rs['title'].'   ['.$rs['year'].']'.'</option>';
                   }
                 }
                 $select.='</select>';
