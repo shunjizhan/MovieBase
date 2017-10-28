@@ -27,58 +27,43 @@
     <?php
       include "tables.inc";
 
-    	$db = mysql_connect("localhost", "cs143", "");
-    	if(!$db) {
-    		$errmsg = mysql_error($db);
-    		print "Connection failed: $errmsg <br>";
-    		exit(1);
-    	}
+      $db = mysql_connect("localhost", "cs143", "");
+      if(!$db) {
+        $errmsg = mysql_error($db);
+        print "Connection failed: $errmsg <br>";
+        exit(1);
+      }
 
-    	mysql_select_db("CS143", $db);
+      mysql_select_db("CS143", $db);
 
-    		$search = $_GET["search"];
-    		$id = $_GET["id"];
+      $search = $_GET["search"];
+      $id = $_GET["id"];
 
-        if ($id != NULL) {
-          $query = "select * from Actor where id='{$id}'";
-          $result = mysql_query($query, $db);
+      if ($id != NULL) {
+        $query = "select * from Actor where id='{$id}'";
+        $result = mysql_query($query, $db);
 
-          $table = new Table($result, 0);
+        $table = new Table($result, 0);
 
 
-        } else if($search != NULL) {
+      } else if($search != NULL) {
         print "<h4><b>Matching Actors Are:</b></h4>";
 
         $query = "  SELECT
-                        *
-                    FROM
-                        Actor
-                    WHERE
-                        last or first
-                    LIKE
-                        '". mysql_real_escape_string($search) ."%'
+        *
+        FROM
+        Actor
+        WHERE
+        last or first
+        LIKE
+        '". mysql_real_escape_string($search) ."%'
         ";
 
         $result = mysql_query($query, $db);
 
         $table = new Table($result, 1);
-
-    print "<h4><b>Matching Movies Are:</b></h4>";
-    $query2 = "  SELECT
-                    *
-                FROM
-                    Movie
-                WHERE
-                    title
-                LIKE
-                    '". mysql_real_escape_string($search) ."%'
-    ";
-
-    $result2 = mysql_query($query2, $db);
-    new Table($result2, 2);
-
-  }
-    mysql_close($db)
+      }
+      mysql_close($db);
     ?>
 
 </div>

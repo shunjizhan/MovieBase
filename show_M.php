@@ -7,9 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Show Movie Information</title>
-    <link href="css/all.css" rel="stylesheet">
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/fontAwesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/all.css" rel="stylesheet">
 
   <body>
     <?php include("navigation.php"); ?>
@@ -25,20 +25,45 @@
     </form>
 
     <?php
-    	$db = mysql_connect("localhost", "cs143", "");
-    	if(!$db) {
-    		$errmsg = mysql_error($db);
-    		print "Connection failed: $errmsg <br>";
-    		exit(1);
-    	}
+      include "tables.inc";
 
-    	mysql_select_db("CS143", $db);
+      $db = mysql_connect("localhost", "cs143", "");
+      if(!$db) {
+        $errmsg = mysql_error($db);
+        print "Connection failed: $errmsg <br>";
+        exit(1);
+      }
 
-    		$search = $_GET["search"];
+      mysql_select_db("CS143", $db);
 
-    		echo "$search";
+      $search = $_GET["search"];
+      $id = $_GET["id"];
 
-    	mysql_close($db)
+      if ($id != NULL) {
+        $query = "select * from Movie where id='{$id}'";
+        $result = mysql_query($query, $db);
+
+        $table = new Table($result, 0);
+
+
+      } else if($search != NULL) {
+        print "<h4><b>Matching Movies Are:</b></h4>";
+        $query2 = "  SELECT
+        *
+        FROM
+        Movie
+        WHERE
+        title
+        LIKE
+        '". mysql_real_escape_string($search) ."%'
+        ";
+
+        $result2 = mysql_query($query2, $db);
+        new Table($result2, 2);
+
+      }
+
+      mysql_close($db);
     ?>
 
 </div>
