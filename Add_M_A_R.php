@@ -66,51 +66,61 @@
           <label for="role">Role</label>
           <input type="text" class="form-control" name="role">
         </div>
-        <button type="submit" class="btn btn-default">Add!</button>
+        <button type="submit" name="add" class="btn btn-default">Add!</button>
+        <?php
+            if (isset($_GET['add']))
+            {
+            echo "add success";
+            }
+            else
+            {
+            echo "";
+            }
+        ?>
     </form>
+
+
+    <?php
+    	$db = mysql_connect("localhost", "cs143", "");
+    	if(!$db) {
+    		$errmsg = mysql_error($db);
+    		print "Connection failed: $errmsg <br>";
+    		exit(1);
+    	}
+
+    	mysql_select_db("CS143", $db);
+
+    		$title = $_GET["title"];
+    		$actor = $_GET["actor"];
+        $role = $_GET["role"];
+
+    		echo "$title $actor $role";
+        //get the Movie id number
+        $rowSQL = mysql_query("SELECT id as mid FROM Movie WHERE title = '$title';");
+        $row = mysql_fetch_array($rowSQL);
+        $pieces = explode(" ", $actor);
+        // echo $pieces[0], $pieces[1];
+        $aidSQL = mysql_query("SELECT id as aid FROM Actor WHERE first = '$pieces[0]' and last = '$pieces[1]' ;");
+        $aidRow = mysql_fetch_array($aidSQL);
+        // echo $row[1];
+        $mid = $row["mid"];
+        $aid = $aidRow["aid"];
+        echo $mid, "mid   ";
+        echo $aid, "aid   ";
+
+        $query = "INSERT INTO MovieActor(mid,aid,role)
+                  VALUES ($mid, $aid, '$role');
+                  ";
+        mysql_query($query, $db);
+        echo $query;
+        // print "add success: $mid, $aid, $role";
+
+
+    	mysql_close($db)
+    ?>
+
   </div>
 
 
 </body>
 </html>
-
-
-
-<?php
-	$db = mysql_connect("localhost", "cs143", "");
-	if(!$db) {
-		$errmsg = mysql_error($db);
-		print "Connection failed: $errmsg <br>";
-		exit(1);
-	}
-
-	mysql_select_db("CS143", $db);
-
-		$title = $_GET["title"];
-		$actor = $_GET["actor"];
-    $role = $_GET["role"];
-
-		echo "$title $actor $role";
-    //get the Movie id number
-    $rowSQL = mysql_query("SELECT id as mid FROM Movie WHERE title = '$title';");
-    $row = mysql_fetch_array($rowSQL);
-    $pieces = explode(" ", $actor);
-    // echo $pieces[0], $pieces[1];
-    $aidSQL = mysql_query("SELECT id as aid FROM Actor WHERE first = '$pieces[0]' and last = '$pieces[1]' ;");
-    $aidRow = mysql_fetch_array($aidSQL);
-    // echo $row[1];
-    $mid = $row["mid"];
-    $aid = $aidRow["aid"];
-    echo $mid, "mid   ";
-    echo $aid, "aid   ";
-
-    $query = "INSERT INTO MovieActor(mid,aid,role)
-              VALUES ($mid, $aid, '$role');
-              ";
-    mysql_query($query, $db);
-    echo $query;
-    print "add success: $mid, $aid, $role";
-
-
-	mysql_close($db)
-?>
