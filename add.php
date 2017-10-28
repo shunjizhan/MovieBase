@@ -22,7 +22,6 @@
     <?php include("navigation.php"); ?>
 
     <div class="main_container">
-<h3>Add new Actor/Director</h3>
 <form method = "GET" action="add.php">
   <label for="a/d">Add:</label>
   <select name="a/d">

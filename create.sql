@@ -46,7 +46,7 @@ CREATE TABLE MovieGenre(
 CREATE TABLE MovieDirector(
 	mid int,
 	did int,
-	PRIMARY KEY (mid),  -- mid must be unique
+	-- PRIMARY KEY (mid),  -- mid must be unique
 	FOREIGN KEY (mid) references Movie(id), -- movie must exist
 	FOREIGN KEY (did) references Director(id) -- director must exist
 ) ENGINE=INNODB;
@@ -55,7 +55,6 @@ CREATE TABLE MovieActor(
 	mid int,
 	aid int,
 	role varchar(50),
-	PRIMARY KEY (mid),  -- mid must be unique
 	FOREIGN KEY (mid) references Movie(id), -- movie must exist
 	FOREIGN KEY (aid) references Actor(id) -- actor must exist
 ) ENGINE=INNODB;
