@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -6,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Add New Movie Actor Relation</title>
+    <title>Add New Movie Director Relation</title>
     <link href="css/all.css" rel="stylesheet">
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/fontAwesome/css/font-awesome.css" rel="stylesheet">
@@ -40,7 +39,7 @@
                 ?>
         </div>
         <div class="form-group">
-          <label for="actor">Actor</label>
+          <label for="director">Director</label>
               <?php
                 $db = mysql_connect("localhost", "cs143", "");
                 if(!$db) {
@@ -51,9 +50,9 @@
 
                 mysql_select_db("CS143", $db);
 
-                $sql=mysql_query("SELECT first, last, dob FROM Actor");
+                $sql=mysql_query("SELECT first, last, dob FROM Director");
                 if(mysql_num_rows($sql)){
-                $select= '<select class="form-control" name="actor">';
+                $select= '<select class="form-control" name="director">';
                 while($rs=mysql_fetch_array($sql)){
                       $select.='<option value="'.$rs['first'].' '.$rs['last'].'">'.$rs['first'].' '.$rs['last'].'  ['.$rs['dob'].']'.'</option>';
                   }
@@ -61,10 +60,6 @@
                 $select.='</select>';
                 echo $select;
                 ?>
-        </div>
-        <div class="form-group">
-          <label for="role">Role</label>
-          <input type="text" class="form-control" name="role">
         </div>
         <button type="submit" class="btn btn-default">Add!</button>
     </form>
@@ -87,29 +82,28 @@
 	mysql_select_db("CS143", $db);
 
 		$title = $_GET["title"];
-		$actor = $_GET["actor"];
-    $role = $_GET["role"];
+		$director = $_GET["director"];
 
-		echo "$title $actor $role";
+		echo "$title $director";
     //get the Movie id number
     $rowSQL = mysql_query("SELECT id as mid FROM Movie WHERE title = '$title';");
     $row = mysql_fetch_array($rowSQL);
-    $pieces = explode(" ", $actor);
+    $pieces = explode(" ", $director);
     // echo $pieces[0], $pieces[1];
-    $aidSQL = mysql_query("SELECT id as aid FROM Actor WHERE first = '$pieces[0]' and last = '$pieces[1]' ;");
-    $aidRow = mysql_fetch_array($aidSQL);
+    $didSQL = mysql_query("SELECT id as did FROM Director WHERE first = '$pieces[0]' and last = '$pieces[1]' ;");
+    $didRow = mysql_fetch_array($didSQL);
     // echo $row[1];
     $mid = $row["mid"];
-    $aid = $aidRow["aid"];
+    $did = $didRow["did"];
     echo $mid, "mid   ";
-    echo $aid, "aid   ";
+    echo $did, "did   ";
 
-    $query = "INSERT INTO MovieActor(mid,aid,role)
-              VALUES ($mid, $aid, '$role');
+    $query = "INSERT INTO MovieDirector(mid,did)
+              VALUES ($mid, $did);
               ";
     mysql_query($query, $db);
     echo $query;
-    print "add success: $mid, $aid, $role";
+    print "add success: $mid, $did";
 
 
 	mysql_close($db)
