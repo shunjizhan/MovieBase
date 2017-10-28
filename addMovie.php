@@ -100,7 +100,10 @@
     		$result = mysql_query($query, $db);
         mysql_query($query2, $db);
         mysql_query($query3, $db);
-        print "add success: $title $company $year $rate $genre";
+
+        if($title != NULL) {
+          print "add success: $title $company $year $rate $genre";
+        }
 
     	mysql_close($db)
     ?>
