@@ -61,50 +61,57 @@
                 echo $select;
                 ?>
         </div>
-        <button type="submit" class="btn btn-default">Add!</button>
+        <button type="submit" name="add" class="btn btn-default">Add!</button>
+        <?php
+            if (isset($_GET['add']))
+            {
+            echo "add success";
+            }
+            else
+            {
+            echo "";
+            }
+        ?>
     </form>
+    <?php
+    	$db = mysql_connect("localhost", "cs143", "");
+    	if(!$db) {
+    		$errmsg = mysql_error($db);
+    		print "Connection failed: $errmsg <br>";
+    		exit(1);
+    	}
+
+    	mysql_select_db("CS143", $db);
+
+    		$title = $_GET["title"];
+    		$director = $_GET["director"];
+
+    		echo "$title $director";
+        //get the Movie id number
+        $rowSQL = mysql_query("SELECT id as mid FROM Movie WHERE title = '$title';");
+        $row = mysql_fetch_array($rowSQL);
+        $pieces = explode(" ", $director);
+        // echo $pieces[0], $pieces[1];
+        $didSQL = mysql_query("SELECT id as did FROM Director WHERE first = '$pieces[0]' and last = '$pieces[1]' ;");
+        $didRow = mysql_fetch_array($didSQL);
+        // echo $row[1];
+        $mid = $row["mid"];
+        $did = $didRow["did"];
+        echo $mid, "mid   ";
+        echo $did, "did   ";
+
+        $query = "INSERT INTO MovieDirector(mid,did)
+                  VALUES ($mid, $did);
+                  ";
+        mysql_query($query, $db);
+        echo $query;
+        // print "add success: $mid, $did ";
+
+
+    	mysql_close($db)
+    ?>
   </div>
 
 
 </body>
 </html>
-
-
-
-<?php
-	$db = mysql_connect("localhost", "cs143", "");
-	if(!$db) {
-		$errmsg = mysql_error($db);
-		print "Connection failed: $errmsg <br>";
-		exit(1);
-	}
-
-	mysql_select_db("CS143", $db);
-
-		$title = $_GET["title"];
-		$director = $_GET["director"];
-
-		echo "$title $director";
-    //get the Movie id number
-    $rowSQL = mysql_query("SELECT id as mid FROM Movie WHERE title = '$title';");
-    $row = mysql_fetch_array($rowSQL);
-    $pieces = explode(" ", $director);
-    // echo $pieces[0], $pieces[1];
-    $didSQL = mysql_query("SELECT id as did FROM Director WHERE first = '$pieces[0]' and last = '$pieces[1]' ;");
-    $didRow = mysql_fetch_array($didSQL);
-    // echo $row[1];
-    $mid = $row["mid"];
-    $did = $didRow["did"];
-    echo $mid, "mid   ";
-    echo $did, "did   ";
-
-    $query = "INSERT INTO MovieDirector(mid,did)
-              VALUES ($mid, $did);
-              ";
-    mysql_query($query, $db);
-    echo $query;
-    print "add success: $mid, $did";
-
-
-	mysql_close($db)
-?>
