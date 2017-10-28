@@ -43,7 +43,7 @@
           $query = "select * from Actor where id='{$id}'";
           $result = mysql_query($query, $db);
 
-          $table = new Table($result);
+          $table = new Table($result, 0);
 
 
         } else if($search != NULL) {
@@ -61,7 +61,7 @@
 
         $result = mysql_query($query, $db);
 
-        $table = new Table($result);
+        $table = new Table($result, 1);
 
     print "<h4><b>Matching Movies Are:</b></h4>";
     $query2 = "  SELECT
@@ -75,7 +75,7 @@
     ";
 
     $result2 = mysql_query($query2, $db);
-    new Table($result2);
+    new Table($result2, 2);
 
   }
     mysql_close($db)
