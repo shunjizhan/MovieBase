@@ -17,7 +17,7 @@ class Table {
    function create() {
      $result = $this->data;
      $type = $this->type;
-     print $type;
+    //  print $type;
 
      print "<table>";
 

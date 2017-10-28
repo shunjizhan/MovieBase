@@ -1,5 +1,3 @@
-<h3>Add new Relationship between Movie/Actor</h3>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -17,6 +15,8 @@
     <?php include("navigation.php"); ?>
 
     <div class="main_container">
+    <h3>Add new Relationship between Movie/Actor</h3>
+
     <form method="GET" action="#">
         <div class="form-group">
           <label for="title">Movie Title:</label>
