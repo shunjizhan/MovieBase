@@ -24,8 +24,9 @@
         <button type="submit" class="btn btn-default">Search</button>
     </form>
 
-    <h4><b>Matching Actors Are:</b></h4>
     <?php
+      include "tables.inc";
+
     	$db = mysql_connect("localhost", "cs143", "");
     	if(!$db) {
     		$errmsg = mysql_error($db);
@@ -36,7 +37,17 @@
     	mysql_select_db("CS143", $db);
 
     		$search = $_GET["search"];
-        if($search != NULL) {
+    		$id = $_GET["id"];
+
+        if ($id != NULL) {
+          $query = "select * from Actor where id='{$id}'";
+          $result = mysql_query($query, $db);
+
+          $table = new Table($result);
+
+
+        } else if($search != NULL) {
+        print "<h4><b>Matching Actors Are:</b></h4>";
 
         $query = "  SELECT
                         *
@@ -47,26 +58,10 @@
                     LIKE
                         '". mysql_real_escape_string($search) ."%'
         ";
-        echo $query;
 
         $result = mysql_query($query, $db);
-        print "<table>";
 
-        print "<tr>";
-        for($i = 0; $i < mysql_num_fields($result); $i++) {
-            $field_info = mysql_fetch_field($result, $i);
-            echo "<th>{$field_info->name}</th>";
-        }
-        print "</tr>";
-
-        while($row = mysql_fetch_row($result)) {
-          print "<tr>";
-          for($i = 0; $i < count($row); $i++) {
-            print "<th><a href='#'>$row[$i]</a></th>";
-          }
-          print "</tr>";
-        }
-        print "</table>";
+        $table = new Table($result);
 
     print "<h4><b>Matching Movies Are:</b></h4>";
     $query2 = "  SELECT
@@ -80,23 +75,8 @@
     ";
 
     $result2 = mysql_query($query2, $db);
-    print "<table>";
+    new Table($result2);
 
-    print "<tr>";
-    for($i = 0; $i < mysql_num_fields($result2); $i++) {
-        $field_info = mysql_fetch_field($result2, $i);
-        echo "<th>{$field_info->name}</th>";
-    }
-    print "</tr>";
-
-    while($row = mysql_fetch_row($result2)) {
-      print "<tr>";
-      for($i = 0; $i < count($row); $i++) {
-        print "<th>$row[$i]</th>";
-      }
-      print "</tr>";
-    }
-    print "</table>";
   }
     mysql_close($db)
     ?>

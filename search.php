@@ -24,7 +24,6 @@
         <button type="submit" class="btn btn-default">Search</button>
     </form>
 
-    <h4><b>Matching Actors Are:</b></h4>
     <?php
     	$db = mysql_connect("localhost", "cs143", "");
     	if(!$db) {
@@ -38,6 +37,8 @@
     		$search = $_GET["search"];
         if($search != NULL) {
 
+          print "<h4><b>Matching Actors Are:</b></h4>";
+
         $query = "  SELECT
                         *
                     FROM
@@ -47,7 +48,7 @@
                     LIKE
                         '". mysql_real_escape_string($search) ."%'
         ";
-        echo $query;
+        // echo $query;
 
         $result = mysql_query($query, $db);
         print "<table>";
