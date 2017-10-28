@@ -1,7 +1,9 @@
+<h3>Add new Relationship between Movie/Actor</h3>
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <title>Add new Relationship between Movie/Actor</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
