@@ -36,9 +36,7 @@
     	mysql_select_db("CS143", $db);
 
     		$search = $_GET["search"];
-
-    		echo "$search";
-
+        if($search != NULL) {
 
         $query = "  SELECT
                         *
@@ -47,8 +45,9 @@
                     WHERE
                         last or first
                     LIKE
-                        '". mysql_real_escape_string($_GET['search']) ."%'
+                        '". mysql_real_escape_string($search) ."%'
         ";
+        echo $query;
 
         $result = mysql_query($query, $db);
         print "<table>";
@@ -63,15 +62,13 @@
         while($row = mysql_fetch_row($result)) {
           print "<tr>";
           for($i = 0; $i < count($row); $i++) {
-            print "<th>$row[$i]</th>";
+            print "<th><a href='#'>$row[$i]</a></th>";
           }
           print "</tr>";
         }
         print "</table>";
-    	// mysql_close($db)
-    ?>
-    <h4><b>Matching Movies Are:</b></h4>
-    <?php
+
+    print "<h4><b>Matching Movies Are:</b></h4>";
     $query2 = "  SELECT
                     *
                 FROM
@@ -79,7 +76,7 @@
                 WHERE
                     title
                 LIKE
-                    '". mysql_real_escape_string($_GET['search']) ."%'
+                    '". mysql_real_escape_string($search) ."%'
     ";
 
     $result2 = mysql_query($query2, $db);
@@ -100,6 +97,7 @@
       print "</tr>";
     }
     print "</table>";
+  }
     mysql_close($db)
     ?>
 </div>
