@@ -1,6 +1,7 @@
 <?php
+// Start the session
 session_start();
-  ?>
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -19,11 +20,19 @@ session_start();
     <div class="main_container">
      <?php
        include "tables.inc";
+
        $name = $_GET["name"];
        $rate = $_GET["rate"];
        $comment = $_GET["comment"];
-       $_SESSION["id"] = $_GET['value_key'];
+       $title = $_GET["title"];
+
+       $id = $_GET['value_key'];
+       $_SESSION["id"] = $id;
        echo $_SESSION["id"];
+
+       print "<h3><b>Add New Comments here:</b></h3>";
+       print "<h5><b>Movie Title: {$title}</b></h5>";
+
        if (isset($name)) {
         //  echo $id;
 
@@ -42,21 +51,21 @@ session_start();
          $title = $row['Title'];
          // print $title;
 
-         echo $name, $rate, $comment;
+        //  echo $name, $rate, $comment;
          $time = date('Y-m-d');
-         echo $time;
+        //  echo $time;
          $idd = $_SESSION["id"];
+         echo "idd=$idd        ";
+         print_r($_SESSION);
          $query = "INSERT INTO Review
                    VALUES('$name', $time, $idd, $rate, '$comment');";
          $result = mysql_query($query, $db);
          echo $query;
-
-         print "<h3><b>Add New Comments here:</b></h3>";
-         print "<h5><b>Movie Title: {$title}</b></h5>";
-        //  print "add success";
-         mysql_close($db);
       }
-      ?>
+
+      mysql_close($db);
+
+    ?>
     <form method="GET" action="#">
       <div class="form-group">
         <label for="Name">Your Name</label>
