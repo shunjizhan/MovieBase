@@ -39,40 +39,49 @@
       $search = $_GET["search"];
       $id = $_GET["id"];
 
-      if($search != NULL) {
-        print "<h4><b>Matching Actors Are:</b></h4>";
+      if(isset($search)) {
+        $keywords = explode(" ", mysql_real_escape_string($search));
 
-        $query = "  SELECT
-        *
-        FROM
-        Actor
-        WHERE
-        last or first
-        LIKE
-        '". mysql_real_escape_string($search) ."%'
-        ";
+        // Actors
+        print "<h4><b>Matching Actors Are:</b></h4>";
+        switch(count($keywords)) {
+          case 0:
+          case 1:
+            $query = "SELECT * FROM Actor
+                      WHERE (first LIKE '%$search%') OR (last LIKE '%$search%')";
+            break;
+
+          case 2:
+            $keyword1 = $keywords[0];
+            $keyword2 = $keywords[1];
+            $query = "SELECT * FROM Actor
+                      WHERE (first LIKE '%$keyword1%') AND (last LIKE '%$keyword2%') OR
+                            (last LIKE '%$keyword1%') AND (first LIKE '%$keyword2%')";
+            break;
+
+          default:
+            $query = "SELECT * FROM Actor WHERE FALSE";
+        }
 
         $result = mysql_query($query, $db);
+
         $table = new Table($result, 1);
 
+        // Movies
         print "<h4><b>Matching Movies Are:</b></h4>";
-        $query2 = "  SELECT
-        *
-        FROM
-        Movie
-        WHERE
-        title
-        LIKE
-        '". mysql_real_escape_string($search) ."%'
-        ";
+        $query = "SELECT * FROM Movie WHERE title LIKE '%$keywords[0]%'";
+        for($i = 1; $i < count($keywords); $i++) {
+          $query .= "AND title LIKE '%$keywords[$i]%'";
+        }
 
-        $result2 = mysql_query($query2, $db);
-        new Table($result2, 2);
+        $result = mysql_query($query, $db);
 
+        $table = new Table($result, 2);
       }
 
       mysql_close($db);
-    ?>
+      ?>
+
 </div>
 </body>
 </html>
