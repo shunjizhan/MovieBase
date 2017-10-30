@@ -46,7 +46,7 @@
          echo "idd=$idd        ";
         //  print_r($_SESSION);
          $query = "INSERT INTO Review
-                   VALUES('$name', $time, $idd, $rate, '$comment');";
+                   VALUES('$name', '$time', $idd, $rate, '$comment');";
          $result = mysql_query($query, $db);
          echo $query;
          mysql_close($db);
