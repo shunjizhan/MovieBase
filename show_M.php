@@ -24,62 +24,8 @@
         <button type="submit" class="btn btn-default">Search</button>
     </form>
 
-    <?php
-      include "tables.inc";
+    <?php include("_search_M.php"); ?>
 
-      $db = mysql_connect("localhost", "cs143", "");
-      if(!$db) {
-        $errmsg = mysql_error($db);
-        print "Connection failed: $errmsg <br>";
-        exit(1);
-      }
-
-      mysql_select_db("CS143", $db);
-
-      $search = $_GET["search"];
-      $id = $_GET["id"];
-
-      if ($id != NULL) {
-        $query = "select * from Movie where id='{$id}'";
-        $result = mysql_query($query, $db);
-        //actors info query
-        $query2 = "select concat(a.first, ' ', a.last) as 'name', ma.role from Actor a, MovieActor ma where ma.mid = '{$id}' and a.id = ma.aid ";
-        $result2 = mysql_query($query2, $db);
-        //review query
-        $query3 = "select comment from Review where mid = '{$id}'";
-        $result3 = mysql_query($query3, $db);
-        $row = mysql_fetch_array($query3);
-
-        print "<h4><b>Movie Information:</b></h4>";
-        $table = new Table($result, 0);
-
-        print "<h4><b>Actors in the Movie:</b></h4>";
-        $table2 = new Table($result2, 1);
-
-        print "<h4><b>User Review:</b></h4>";
-        if($row["comment"] == ''){
-          print "<a href='addReview.php?value_key=$id'>Be the first to add a review!</a>";
-        }
-
-      } else if($search != NULL) {
-        print "<h4><b>Matching Movies Are:</b></h4>";
-        $query2 = "  SELECT
-        *
-        FROM
-        Movie
-        WHERE
-        title
-        LIKE
-        '". mysql_real_escape_string($search) ."%'
-        ";
-
-        $result2 = mysql_query($query2, $db);
-        new Table($result2, 2);
-
-      }
-
-      mysql_close($db);
-    ?>
 
 </div>
 </body>

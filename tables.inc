@@ -46,6 +46,7 @@ class Table {
        print "</tr>";
      }
      print "</table>";
+     print "<br>";
    }
 
 }
