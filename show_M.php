@@ -27,6 +27,12 @@
     <?php
       include "tables.inc";
 
+      function fetch_first_row($result) {
+        $row = mysql_fetch_assoc($result);
+        mysql_data_seek($result, 0);
+        return $row;
+      }
+
       $db = mysql_connect("localhost", "cs143", "");
       if(!$db) {
         $errmsg = mysql_error($db);
@@ -42,6 +48,7 @@
       if (isset($id)) {                   // display actor information
         $query = "select * from Movie where id='{$id}'";
         $result = mysql_query($query, $db);
+        $title = fetch_first_row($result)['title'];
         $table = new Table($result, 0, "Movie's Information:");
 
         $query2 = "SELECT a.id, concat(a.first, ' ', a.last) as 'Actor Name', ma.role

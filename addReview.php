@@ -23,8 +23,7 @@
        $title = $_GET["title"];
        $id = $_GET["value_key"];
 
-       print "<h3><b>Add New Comments here:</b></h3>";
-       print "<h5><b>Movie Title: {$title}</b></h5>";
+       print "<h3>Add New Comments for <b>'$title'</b></h3>";
 
        if (isset($name)) {
          $db = mysql_connect("localhost", "cs143", "");
@@ -37,10 +36,8 @@
          mysql_select_db("CS143", $db);
          $rowSQL = mysql_query("SELECT title as 'Title' from Movie where id = {$id}");
          $result = mysql_query($query, $db);
-         // $table = new Table($result, 0);
          $row = mysql_fetch_array($rowSQL);
          $title = $row['Title'];
-         // print $title;
 
         //  echo $name, $rate, $comment;
          $time = date('Y-m-d');
