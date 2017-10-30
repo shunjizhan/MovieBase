@@ -42,3 +42,8 @@ th {
 tr:hover {
   background-color: #ABEBC6;
 }
+
+.secret {
+  display: none !important;
+  visibility: hidden;
+}

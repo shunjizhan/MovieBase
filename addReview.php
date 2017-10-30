@@ -1,7 +1,3 @@
-<?php
-// Start the session
-session_start();
-?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -25,17 +21,12 @@ session_start();
        $rate = $_GET["rate"];
        $comment = $_GET["comment"];
        $title = $_GET["title"];
-
-       $id = $_GET['value_key'];
-       $_SESSION["id"] = $id;
-       echo $_SESSION["id"];
+       $id = $_GET["value_key"];
 
        print "<h3><b>Add New Comments here:</b></h3>";
        print "<h5><b>Movie Title: {$title}</b></h5>";
 
        if (isset($name)) {
-        //  echo $id;
-
          $db = mysql_connect("localhost", "cs143", "");
          if(!$db) {
            $errmsg = mysql_error($db);
@@ -54,39 +45,45 @@ session_start();
         //  echo $name, $rate, $comment;
          $time = date('Y-m-d');
         //  echo $time;
-         $idd = $_SESSION["id"];
+         $idd = $_GET["id"];
          echo "idd=$idd        ";
-         print_r($_SESSION);
+        //  print_r($_SESSION);
          $query = "INSERT INTO Review
                    VALUES('$name', $time, $idd, $rate, '$comment');";
          $result = mysql_query($query, $db);
          echo $query;
+         mysql_close($db);
       }
 
-      mysql_close($db);
+
+
+print "
+      <form method='GET' action='#'>
+        <div class='form-group'>
+          <label for='Name'>Your Name</label>
+          <input type='text' class='form-control' name='name'>
+        </div>
+        <div class='form-group'>
+            <label for='Rating'>Your Rating</label>
+            <select class='form-control' name='rate'>
+                <option value='1'>1</option>
+                <option value='2'>2</option>
+                <option value='3'>3</option>
+                <option value='4'>4</option>
+                <option value='5'>5</option>
+            </select>
+        </div>
+        <div class='form-froup'>
+          <label for='TextArea'>Your Comments</label>
+          <textarea class='form-control' name='comment' rows='5'  placeholder='no more than 500 characters' ></textarea><br>
+          <textarea class='secret' name='id' rows='5'  placeholder='no more than 500 characters' >$id</textarea><br>
+       </div>
+       <button type='submit' name = 'bt' class='btn btn-default'>Add!</button>
+      </form>
+      "
 
     ?>
-    <form method="GET" action="#">
-      <div class="form-group">
-        <label for="Name">Your Name</label>
-        <input type='text' class='form-control' name='name'>
-      </div>
-      <div class="form-group">
-          <label for="Rating">Your Rating</label>
-          <select class="form-control" name="rate">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-          </select>
-      </div>
-      <div class="form-froup">
-        <label for="TextArea">Your Comments</label>
-        <textarea class="form-control" name="comment" rows="5"  placeholder="no more than 500 characters" ></textarea><br>
-     </div>
-     <button type="submit" name = "bt" class="btn btn-default">Add!</button>
-    </form>
+
 
 
 
