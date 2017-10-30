@@ -8,17 +8,19 @@ class Table {
     2: movie table
    */
 
-   function __construct($data, $type=0) {
+   function __construct($data, $type=0, $title="This is a table") {
        $this->data = $data;
        $this->type = $type;
+       $this->title = $title;
        $this->create();
    }
 
    function create() {
      $result = $this->data;
      $type = $this->type;
-    //  print $type;
+     $title = $this->title;
 
+     print "<h3>$title</h3>";
      print "<table>";
 
      print "<tr>";

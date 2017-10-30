@@ -43,7 +43,7 @@
         $keywords = explode(" ", mysql_real_escape_string($search));
 
         // Actors
-        print "<h4><b>Matching Actors Are:</b></h4>";
+
         switch(count($keywords)) {
           case 0:
           case 1:
@@ -65,10 +65,9 @@
 
         $result = mysql_query($query, $db);
 
-        $table = new Table($result, 1);
+        $table = new Table($result, 1, "Matching Actors:");
 
         // Movies
-        print "<h4><b>Matching Movies Are:</b></h4>";
         $query = "SELECT * FROM Movie WHERE title LIKE '%$keywords[0]%'";
         for($i = 1; $i < count($keywords); $i++) {
           $query .= "AND title LIKE '%$keywords[$i]%'";
@@ -76,7 +75,7 @@
 
         $result = mysql_query($query, $db);
 
-        $table = new Table($result, 2);
+        $table = new Table($result, 2, "Matching Movies:");
       }
 
       mysql_close($db);
