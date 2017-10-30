@@ -74,7 +74,7 @@ CREATE TABLE Review(
 	mid int,
 	rating int,
 	comment varchar(500),
-	PRIMARY KEY (mid),  -- mid must be unique
+	-- PRIMARY KEY (mid),  -- mid must be unique
 	FOREIGN KEY (mid) references Movie(id) -- movie must exist
 ) ENGINE=INNODB;
 
