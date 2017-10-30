@@ -39,6 +39,8 @@
                 }
                 $select.='</select>';
                 echo $select;
+                mysql_close($db)
+
                 ?>
         </div>
         <div class="form-group">
@@ -62,6 +64,8 @@
                 }
                 $select.='</select>';
                 echo $select;
+                mysql_close($db)
+
                 ?>
         </div>
         <div class="form-group">
