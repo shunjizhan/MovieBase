@@ -70,7 +70,7 @@ print "
                 <option value='4'>4</option>
                 <option value='5'>5</option>
             </select>
-        </div>
+        </div>s
         <div class='form-froup'>
           <label for='TextArea'>Your Comments</label>
           <textarea class='form-control' name='comment' rows='5'  placeholder='no more than 500 characters' ></textarea><br>
