@@ -18,15 +18,17 @@ h1, h2, h3, h4, h5 {
   position: relative;
 }
 
-.add, .show, .search { color: black; }
+.add, .show, .search, .home { color: black; }
 
 .add i { color: #28B463; }
 .show i { color: #0288D1; }
 .search i { color: #F39C12; }
+.home i { color: #17202A; }
 
-.add:hover { color: #28B463; background-color: rgba(40,180,99, 0.05) !important; }
-.show:hover { color: #0288D1; background-color: rgba(2,136,209, 0.05) !important; }
-.search:hover { color: #F39C12; background-color: rgba(243,156,18, 0.05) !important; }
+.add:hover { color: #28B463; background-color: rgba(40,180,99, 0.05) !important; cursor: pointer; }
+.show:hover { color: #0288D1; background-color: rgba(2,136,209, 0.05) !important; cursor: pointer; }
+.search:hover { color: #F39C12; background-color: rgba(243,156,18, 0.05) !important; cursor: pointer; }
+.home:hover { color: #17202A; background-color: rgba(23, 32, 42, 0.05) !important; cursor: pointer; }
 
 
 

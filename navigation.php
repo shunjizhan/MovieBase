@@ -1,6 +1,7 @@
 <div class="nav_container">
 
   <ul class="nav nav-sidebar addSection">
+    <li><a class="home" href="index.php"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
     <li><a class="add" href="add.php"><i class="fa fa-plus-circle" aria-hidden="true"></i> Actor/Director</a></li>
     <li><a class="add" href="AddMovie.php"><i class="fa fa-plus-circle" aria-hidden="true"></i> Movie Information</a></li>
     <li><a class="add" href="Add_M_A_R.php"><i class="fa fa-plus-circle" aria-hidden="true"></i> Movie/Actor Relation</a></li>
