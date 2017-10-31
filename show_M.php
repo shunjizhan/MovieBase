@@ -61,7 +61,12 @@
         $result3 = mysql_query($query3, $db);
         $table3 = new Table($result3, 0, "User Review:");
 
+        $query4 = mysql_query("SELECT AVG(rating) as rating from Review where mid = '{$id}'");
+        $row = mysql_fetch_array($query4 );
+        $avgRate = $row["rating"];
+
         if(mysql_num_rows($result3)) {
+          print "The Average Rating for this Movie is: {$avgRate}. <br>";
           print "<a href='addReview.php?value_key=$id&title=$title'>Add another review</a>";
         } else {
           print "No one has reviewed this movie yet. <br>";
