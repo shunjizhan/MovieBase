@@ -41,8 +41,8 @@
       $id = $_GET["id"];
 
       if (isset($id)) {                   // display actor information
-        $query = "select * from Actor where id='{$id}'";
-        $result = mysql_query($query, $db);
+        $query = "select id, concat(last,' ',first) as 'Actor Name', sex, dob as 'Birthday', dod as 'Pass Away' from Actor where id='{$id}'";
+        $result = mysql_query($query, $db);  
 
           $query2 = "SELECT m.title as 'Movie Title', ma.role as 'Role'
                      FROM MovieActor ma, Movie m

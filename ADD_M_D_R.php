@@ -72,8 +72,8 @@
         // echo $row[1];
         $mid = $row["mid"];
         $did = $didRow["did"];
-        echo $mid, "mid   ";
-        echo $did, "did   ";
+        // echo $mid, "mid   ";
+        // echo $did, "did   ";
 
         $query = "INSERT INTO MovieDirector(mid,did)
                   VALUES ($mid, $did);

@@ -24,6 +24,7 @@
 
        if (isset($_GET["id"])) {
          $id = $_GET["id"];
+         $title = $_GET["title"];
        } else {
          $id = $_GET["value_key"];
        }
@@ -74,6 +75,7 @@ print "
           <label for='TextArea'>Your Comments</label>
           <textarea class='form-control' name='comment' rows='5'  placeholder='no more than 500 characters' ></textarea><br>
           <textarea class='secret' name='id' rows='5'  placeholder='no more than 500 characters' >$id</textarea><br>
+          <textarea class='secret' name='title' rows='5'  placeholder='no more than 500 characters' >$title</textarea><br>
        </div>
        <button type='submit' name = 'bt' class='btn btn-default'>Add!</button>
       </form>

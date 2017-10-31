@@ -47,14 +47,14 @@
         switch(count($keywords)) {
           case 0:
           case 1:
-            $query = "SELECT * FROM Actor
+            $query = "SELECT id, concat(last,' ',first) as 'Actor Name', sex, dob as 'Birthday', dod as 'Pass Away' from Actor
                       WHERE (first LIKE '%$search%') OR (last LIKE '%$search%')";
             break;
 
           case 2:
             $keyword1 = $keywords[0];
             $keyword2 = $keywords[1];
-            $query = "SELECT * FROM Actor
+            $query = "SELECT id, concat(last,' ',first) as 'Actor Name', sex, dob as 'Birthday', dod as 'Pass Away' from Actor
                       WHERE (first LIKE '%$keyword1%') AND (last LIKE '%$keyword2%') OR
                             (last LIKE '%$keyword1%') AND (first LIKE '%$keyword2%')";
             break;
