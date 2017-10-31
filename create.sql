@@ -39,7 +39,6 @@ CREATE TABLE Director(
 CREATE TABLE MovieGenre(
 	mid int,
 	genre varchar(20),
-	PRIMARY KEY (mid),  -- mid must be unique
 	FOREIGN KEY (mid) references Movie(id) -- movie must exist
 ) ENGINE=INNODB;
 

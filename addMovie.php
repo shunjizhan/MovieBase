@@ -82,14 +82,13 @@
         $genre = "";
 
         foreach($_GET["genre"] as $g) {
-          $genre .= $g;
+          $genre .= " $g";
         }
 
         //get the largest id number
         $rowSQL = mysql_query("SELECT MAX(id) AS max FROM MaxMovieID;");
         $row = mysql_fetch_array($rowSQL);
         $largestNumber = $row["max"];
-        // echo $largestNumber;
 
         $query = "INSERT INTO Movie(id,title,year,rating,company)
                   VALUES ($largestNumber+1, '{$title}', {$year}, '{$rate}', '{$company}');

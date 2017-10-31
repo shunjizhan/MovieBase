@@ -46,7 +46,10 @@
       $id = $_GET["id"];
 
       if (isset($id)) {                   // display actor information
-        $query = "SELECT m.*, concat(d.last,' ', d.first) as 'Director' from Movie m, MovieDirector md, Director d where m.id='{$id}' and md.mid = m.id and md.did = d.id";
+        $query = "SELECT m.*, concat(d.last,' ', d.first) as 'Director', mg.genre
+                  FROM Movie m, MovieDirector md, Director d , MovieGenre mg
+                  WHERE m.id='{$id}' and md.mid = m.id and md.did = d.id and mg.mid = m.id";
+
         $result = mysql_query($query, $db);
         $title = fetch_first_row($result)['title'];
         $table = new Table($result, 0, "Movie's Information:");
