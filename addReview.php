@@ -45,14 +45,10 @@
          $title = $row['Title'];
 
          $time = date('Y-m-d H:i:s")');
-        //  echo $time;
-         $idd = $_GET["id"];
-         echo "idd=$idd        ";
-        //  print_r($_SESSION);
          $query = "INSERT INTO Review
-                   VALUES('$name', '$time', $idd, $rate, '$comment');";
+                   VALUES('$name', '$time', $id, $rate, '$comment');";
          $result = mysql_query($query, $db);
-         echo $query;
+
          mysql_close($db);
       }
 
@@ -81,8 +77,12 @@ print "
        </div>
        <button type='submit' name = 'bt' class='btn btn-default'>Add!</button>
       </form>
-      "
+      ";
 
+      if (isset($name)) {
+        print "your comment is saved!<br>
+               you can add more comment or <a href='show_M.php?id=$id'>see your comment</a>";
+      }
     ?>
 
 
