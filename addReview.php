@@ -39,8 +39,7 @@
          $row = mysql_fetch_array($rowSQL);
          $title = $row['Title'];
 
-        //  echo $name, $rate, $comment;
-         $time = date('Y-m-d');
+         $time = date('Y-m-d H:i:s")');
         //  echo $time;
          $idd = $_GET["id"];
          echo "idd=$idd        ";
