@@ -21,7 +21,12 @@
        $rate = $_GET["rate"];
        $comment = $_GET["comment"];
        $title = $_GET["title"];
-       $id = $_GET["value_key"];
+
+       if (isset($_GET["id"])) {
+         $id = $_GET["id"];
+       } else {
+         $id = $_GET["value_key"];
+       }
 
        print "<h3>Add New Comments for <b>'$title'</b></h3>";
 
