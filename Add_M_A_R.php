@@ -20,47 +20,23 @@
     <form method="GET" action="#">
         <div class="form-group">
           <label for="title">Movie Title:</label>
-              <?php
-              	$db = mysql_connect("localhost", "cs143", "");
-
-              	if(!$db) {
-              		$errmsg = mysql_error($db);
-              		print "Connection failed: $errmsg <br>";
-              		exit(1);
-              	}
-
-              	mysql_select_db("CS143", $db);
-
-                $sql=mysql_query("SELECT title, year FROM Movie");
-                if(mysql_num_rows($sql)){
-                $select = '<select class="form-control" name="title">';
-                while($rs=mysql_fetch_array($sql)){
-                      $select.='<option value="'.$rs['title'].'">'.$rs['title'].'   ['.$rs['year'].']'.'</option>';
-                  }
-                }
-                $select.='</select>';
-                echo $select;
-
-                mysql_close($db);
-              ?>
+              <?php include("_movie_list.php") ?>
         </div>
         <div class="form-group">
           <label for="actor">Actor</label>
               <?php
                 $db = mysql_connect("localhost", "cs143", "");
-
                 if(!$db) {
                   $errmsg = mysql_error($db);
                   print "Connection failed: $errmsg <br>";
                   exit(1);
                 }
-
                 mysql_select_db("CS143", $db);
 
                 $sql = mysql_query("SELECT first, last, dob FROM Actor");
-                if(mysql_num_rows($sql)){
+                if(mysql_num_rows($sql)) {
                 $select = '<select class="form-control" name="actor">';
-                while($rs=mysql_fetch_array($sql)){
+                while($rs = mysql_fetch_array($sql)){
                       $select.='<option value="'.$rs['first'].' '.$rs['last'].'">'.$rs['first'].' '.$rs['last'].'  ['.$rs['dob'].']'.'</option>';
                   }
                 }
@@ -76,7 +52,6 @@
         </div>
         <button type="submit" name="add" class="btn btn-default">Add!</button>
     </form>
-
 
     <?php
     	$db = mysql_connect("localhost", "cs143", "");
