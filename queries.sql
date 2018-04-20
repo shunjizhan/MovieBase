@@ -1,12 +1,15 @@
 SELECT s.name from (SELECT CONCAT( first, ' ', last ) as name, title, aid FROM Actor a, Movie m, MovieActor c
-WHERE m.title = 'Death to Smoochy' and c.aid = a.id and m.id = c.mid) s;
--- find the names of all the actors in the movie 'Death to Smoochy'.
+WHERE m.title = 'Die Another Day' and c.aid = a.id and m.id = c.mid) s;
+-- find the names of all the actors in the movie 'Die Another Day'.
 
-SELECT a.title from (SELECT title, ticketsSold FROM Movie m, Sales s
-WHERE s.mid = m.id and s.ticketsSold > 900000) a;
--- find all the titles of the movies which sold more than 900000 tickets
+SELECT count(*) from 
+(SELECT a.last, a.id, ma.aid, title from Actor a, MovieActor ma, Movie m
+WHERE a.id = ma.aid and ma.mid = m.id 
+group by a.id 
+having count(*) > 1) x;
+-- Give me the count of all the actors who acted in multiple movies.
 
-select count(*) from 
+SELECT count(*) from 
 (SELECT d.last, d.id, md.mid, title from Director d, MovieDirector md, Movie m
 WHERE d.id = md.did and md.mid = m.id 
 group by d.id 
