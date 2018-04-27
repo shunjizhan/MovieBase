@@ -28,47 +28,46 @@
       include "tables.inc";
 
       function fetch_first_row($result) {
-        $row = mysql_fetch_assoc($result);
-        mysql_data_seek($result, 0);
+        $row = mysqli_fetch_assoc($result);
+        mysqli_data_seek($result, 0);
         return $row;
       }
 
-      $db = mysql_connect("localhost", "cs143", "");
-      if(!$db) {
-        $errmsg = mysql_error($db);
-        print "Connection failed: $errmsg <br>";
-        exit(1);
+      $db = new mysqli('localhost', 'cs143', '', 'CS143');
+      if($db->connect_errno > 0){
+          die('Unable to connect to database [' . $db->connect_error . ']');
       }
-
-      mysql_select_db("CS143", $db);
 
       $search = $_GET["search"];
       $id = $_GET["id"];
 
       if (isset($id)) {                   // display actor information
-        $query = "SELECT m.*, concat(d.last,' ', d.first) as 'Director', mg.genre
-                  FROM Movie m, MovieDirector md, Director d , MovieGenre mg
-                  WHERE m.id='{$id}' and md.mid = m.id and md.did = d.id and mg.mid = m.id";
+        $subQr_movie_info = "SELECT concat(title, '(',year,')') as 'Title', company as 'Producer', concat(d.first, ' ', d.Last) as 'Director', mg.genre as 'Genre' from Movie left join MovieDirector md on Movie.id = md.mid left join Director d on d.id = md.did left join MovieGenre mg on mg.mid = Movie.id where Movie.id = {$id}";
+        $result_movie_info = $db->query($subQr_movie_info); 
+        $table = new Table($result_movie_info, 0, "Movie's Information:");
 
-        $result = mysql_query($query, $db);
-        $title = fetch_first_row($result)['title'];
-        $table = new Table($result, 0, "Movie's Information:");
+        // $query = "SELECT m.*, concat(d.last,' ', d.first) as 'Director', mg.genre
+        //           FROM Movie m, MovieDirector md, Director d , MovieGenre mg
+        //           WHERE m.id='{$id}' and md.mid = m.id and md.did = d.id and mg.mid = m.id";
+        // $result = $db->query($query); 
+        // $title = fetch_first_row($result)['title'];
+        // $table = new Table($result, 0, "Movie's Information:");
 
         $query2 = "SELECT a.id, concat(a.first, ' ', a.last) as 'Actor Name', ma.role
                    FROM MovieActor ma, Actor a
                    WHERE ma.mid = '{$id}' AND a.id = ma.aid";
-        $result2 = mysql_query($query2, $db);
+        $result2 = $db->query($query2);
         $table2 = new Table($result2, 1, "Actors in this Movies and Role:");
 
         $query3 = "SELECT name, time, rating, comment from Review where mid = '{$id}'";
-        $result3 = mysql_query($query3, $db);
+        $result3 = $db->query($query3);
         $table3 = new Table($result3, 0, "User Review:");
 
-        $query4 = mysql_query("SELECT AVG(rating) as rating from Review where mid = '{$id}'");
-        $row = mysql_fetch_array($query4 );
+        $query4 = $db->query("SELECT AVG(rating) as rating from Review where mid = '{$id}'");
+        $row = mysqli_fetch_array($query4 );
         $avgRate = $row["rating"];
 
-        if(mysql_num_rows($result3)) {
+        if(mysqli_num_rows($result3)) {
           print "The Average Rating for this Movie is: {$avgRate}. <br>";
           print "<a href='addReview.php?value_key=$id&title=$title'>Add another review</a>";
         } else {
@@ -77,18 +76,20 @@
         }
 
       } else if(isset($search)) {           // show search result
-        $keywords = explode(" ", mysql_real_escape_string($search));
-        $query = "SELECT * FROM Movie WHERE title LIKE '%$keywords[0]%'";
+        $keywords = explode(" ", mysqli_real_escape_string($db, $search));
+        // echo $keywords;
+        $query = "SELECT * FROM Movie WHERE title LIKE '$keywords[0]'";
+        // echo $query;
         for($i = 1; $i < count($keywords); $i++) {
-          $query .= "AND title LIKE '%$keywords[$i]%'";
+          $query = "AND title LIKE '$keywords[$i]'";
         }
 
-        $result = mysql_query($query, $db);
+        $result = $db->query($query);
 
         $table = new Table($result, 2, "Matching Movies:");
       }
 
-      mysql_close($db);
+      $db->close();
     ?>
 
 
