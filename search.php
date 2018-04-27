@@ -39,7 +39,7 @@
         echo $search;
 
         if(isset($search)) {
-          $keywords = explode(" ", mysqli_real_escape_string($search));
+          $keywords = explode(" ", mysqli_real_escape_string($db, $search));
 
           // Actors
 
@@ -74,7 +74,7 @@
             $query .= "AND title LIKE '$keywords[$i]'";
           }
 
-          $result = mysqli_query($query, $db);
+          $result = $db->query($query);
           $table = new Table($result, 2, "Matching Movies:");
         }
       }
