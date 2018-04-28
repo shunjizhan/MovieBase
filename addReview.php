@@ -32,7 +32,7 @@
        print "<h3>Add New Comments for <b>'$title'</b></h3>";
 
        if (isset($name)) {
-        echo "hellp";
+        // echo "hellp";
          $db = new mysqli('localhost', 'cs143', '', 'CS143');
          if($db->connect_errno > 0){
              die('Unable to connect to database [' . $db->connect_error . ']');

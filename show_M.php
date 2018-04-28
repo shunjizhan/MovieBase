@@ -42,7 +42,7 @@
       $id = $_GET["id"];
 
       if (isset($id)) {                   // display actor information
-        $subQr_movie_info = "SELECT concat(title, '(',year,')') as 'Title', company as 'Producer', concat(d.first, ' ', d.Last) as 'Director', mg.genre as 'Genre', rv.rating as 'MPAA Rating' from Movie left join MovieDirector md on Movie.id = md.mid left join Director d on d.id = md.did left join MovieGenre mg on mg.mid = Movie.id left join Review rv on rv.mid = Movie.id where Movie.id = {$id}";
+        $subQr_movie_info = "SELECT concat(title, '(',year,')') as 'Title', company as 'Producer', concat(d.first, ' ', d.Last) as 'Director', mg.genre as 'Genre', Movie.rating as 'MPAA Rating' from Movie left join MovieDirector md on Movie.id = md.mid left join Director d on d.id = md.did left join MovieGenre mg on mg.mid = Movie.id where Movie.id = {$id}";
         $result_movie_info = $db->query($subQr_movie_info); 
         $table = new Table($result_movie_info, 0, "Movie's Information:");
 
