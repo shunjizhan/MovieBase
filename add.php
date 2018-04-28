@@ -57,14 +57,12 @@
         </form>
 
         <?php
-        $db = mysql_connect("localhost", "cs143", "");
-        if(!$db) {
-          $errmsg = mysql_error($db);
-          print "Connection failed: $errmsg <br>";
-          exit(1);
+        $db = new mysqli('localhost', 'cs143', '', 'CS143');
+        if($db->connect_errno > 0){
+            die('Unable to connect to database [' . $db->connect_error . ']');
         }
 
-        mysql_select_db("CS143", $db);
+        // mysql_select_db("CS143", $db);
         $type = $_GET["a/d"];
 
         $fname = $_GET["fname"];
@@ -74,25 +72,26 @@
 
         $dateb = str_replace('-', '', $dateb);
         if(!isset($dateb) || trim($dateb) == ''){
-          $datab = 'NULL';
+          $dateb = 'NULL';
         }
-        $dated = $_GET["dated"]; $dated = str_replace('-', '', $dated);
-        if(!isset($dated) || trim($dated)== ''){
-          $datad = 'NULL';
+        $dated = $_GET["dated"]; 
+        $dated = str_replace('-', '', $dated);
+        if(!isset($dated) || $dated == ''){
+          $dated = "NULL";
         }
 
         //get the largest id number
-        $rowSQL = mysql_query("SELECT MAX(id) AS max FROM MaxPersonID;");
-        $row = mysql_fetch_array($rowSQL);
+        $rowSQL = $db->query("SELECT MAX(id) AS max FROM MaxPersonID;");
+        $row = mysqli_fetch_array($rowSQL);
         $largestNumber = $row["max"];
 
         if ($type == "Actor") {
           $query = "INSERT INTO Actor
-          VALUES ($largestNumber+1, '{$lname}', '{$fname}', '{$gender}', '{$dateb}', '{$dated}');
+          VALUES ($largestNumber+1, '{$lname}', '{$fname}', '{$gender}', '{$dateb}', $dated);
           ";
         } else {
           $query = "INSERT INTO Director
-          VALUES ($largestNumber+1, '{$lname}', '{$fname}', '{$dateb}', '{$dated}');
+          VALUES ($largestNumber+1, '{$lname}', '{$fname}', '{$dateb}', $dated);
           ";
         }
 
@@ -100,12 +99,14 @@
 
 
         // echo $type;
-        mysql_query($query, $db);
-        mysql_query($query2, $db);
+        echo "$query";
+        $res = $db->query($query);
+        mysqli_query($db, $query);
+        mysqli_query($db, $query2);
 
         if($fname != NULL) {
           print "add success: $fname $lname $gender $dateb $dated";
         }
 
-        mysql_close($db)
+        $db->close();
         ?>
