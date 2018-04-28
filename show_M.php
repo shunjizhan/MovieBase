@@ -46,11 +46,10 @@
         $result_movie_info = $db->query($subQr_movie_info); 
         $table = new Table($result_movie_info, 0, "Movie's Information:");
 
-        // $query = "SELECT m.*, concat(d.last,' ', d.first) as 'Director', mg.genre
-        //           FROM Movie m, MovieDirector md, Director d , MovieGenre mg
-        //           WHERE m.id='{$id}' and md.mid = m.id and md.did = d.id and mg.mid = m.id";
-        // $result = $db->query($query); 
-        // $title = fetch_first_row($result)['title'];
+        $query = "SELECT title from Movie where Movie.id = {$id}";
+        $result = $db->query($query); 
+        $title = (mysqli_fetch_array($result))["title"];
+        // echo $title;
         // $table = new Table($result, 0, "Movie's Information:");
 
         $query2 = "SELECT a.id, concat(a.first, ' ', a.last) as 'Actor Name', ma.role

@@ -32,25 +32,25 @@
        print "<h3>Add New Comments for <b>'$title'</b></h3>";
 
        if (isset($name)) {
-         $db = mysql_connect("localhost", "cs143", "");
-         if(!$db) {
-           $errmsg = mysql_error($db);
-           print "Connection failed: $errmsg <br>";
-           exit(1);
+        echo "hellp";
+         $db = new mysqli('localhost', 'cs143', '', 'CS143');
+         if($db->connect_errno > 0){
+             die('Unable to connect to database [' . $db->connect_error . ']');
          }
 
-         mysql_select_db("CS143", $db);
-         $rowSQL = mysql_query("SELECT title as 'Title' from Movie where id = {$id}");
-         $result = mysql_query($query, $db);
-         $row = mysql_fetch_array($rowSQL);
+         $rowSQL = $db->query("SELECT title as 'Title' from Movie where id = {$id}");
+         // $result = $db->query($query);
+         $row = mysqli_fetch_array($rowSQL);
          $title = $row['Title'];
-
-         $time = date('Y-m-d H:i:s")');
+         echo "$title";
+         $time = date('Y-m-d H:i:s');
+         echo "$time";
          $query = "INSERT INTO Review
-                   VALUES('$name', '$time', $id, $rate, '$comment');";
-         $result = mysql_query($query, $db);
+                   VALUES('$name', '$time', $id, $rate, '$comment')";
+         mysqli_query($db, $query);
+         // $result = $db->query($query);
 
-         mysql_close($db);
+         $db->close();
       }
 
 
