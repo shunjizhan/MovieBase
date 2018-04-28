@@ -25,25 +25,22 @@
         <div class="form-group">
           <label for="actor">Actor</label>
               <?php
-                $db = mysql_connect("localhost", "cs143", "");
-                if(!$db) {
-                  $errmsg = mysql_error($db);
-                  print "Connection failed: $errmsg <br>";
-                  exit(1);
+                $db = new mysqli('localhost', 'cs143', '', 'CS143');
+                if($db->connect_errno > 0){
+                    die('Unable to connect to database [' . $db->connect_error . ']');
                 }
-                mysql_select_db("CS143", $db);
 
-                $sql = mysql_query("SELECT first, last, dob FROM Actor");
-                if(mysql_num_rows($sql)) {
+                $sql = $db->query("SELECT first, last, dob FROM Actor");
+                if(mysqli_num_rows($sql)) {
                 $select = '<select class="form-control" name="actor">';
-                while($rs = mysql_fetch_array($sql)){
+                while($rs = mysqli_fetch_array($sql)){
                       $select.='<option value="'.$rs['first'].' '.$rs['last'].'">'.$rs['first'].' '.$rs['last'].'  ['.$rs['dob'].']'.'</option>';
                   }
                 }
                 $select.='</select>';
                 echo $select;
 
-                mysql_close($db);
+                $db->close();
               ?>
         </div>
         <div class="form-group">
@@ -54,27 +51,25 @@
     </form>
 
     <?php
-    	$db = mysql_connect("localhost", "cs143", "");
-    	if(!$db) {
-    		$errmsg = mysql_error($db);
-    		print "Connection failed: $errmsg <br>";
-    		exit(1);
-    	}
+    	$db = new mysqli('localhost', 'cs143', '', 'CS143');
+      if($db->connect_errno > 0){
+          die('Unable to connect to database [' . $db->connect_error . ']');
+      }
 
       $title = $_GET["title"];
       $actor = $_GET["actor"];
       $role = $_GET["role"];
 
       if (isset($title, $actor, $role)) {
-        mysql_select_db("CS143", $db);
+        // mysql_select_db("CS143", $db);
 
         //get the Movie id number
-        $rowSQL = mysql_query("SELECT id as mid FROM Movie WHERE title = '$title';");
-        $row = mysql_fetch_array($rowSQL);
+        $rowSQL = $db->query("SELECT id as mid FROM Movie WHERE title = '$title';");
+        $row = mysqli_fetch_array($rowSQL);
 
         $pieces = explode(" ", $actor);
-        $aidSQL = mysql_query("SELECT id as aid FROM Actor WHERE first = '$pieces[0]' and last = '$pieces[1]' ;");
-        $aidRow = mysql_fetch_array($aidSQL);
+        $aidSQL = $db->query("SELECT id as aid FROM Actor WHERE first = '$pieces[0]' and last = '$pieces[1]' ;");
+        $aidRow = mysqli_fetch_array($aidSQL);
 
         $mid = $row["mid"];
         $aid = $aidRow["aid"];
@@ -82,11 +77,11 @@
         $query = "INSERT INTO MovieActor(mid,aid,role)
                   VALUES ($mid, $aid, '$role');";
         // echo $query;
-        mysql_query($query, $db);
+        mysqli_query($db, $query);
 
         echo "add success $title $actor $role";
 
-        mysql_close($db);
+        $db->close();
       }
     ?>
 

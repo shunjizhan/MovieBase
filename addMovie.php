@@ -66,19 +66,17 @@
     </form>
 
     <?php
-    	$db = mysql_connect("localhost", "cs143", "");
-    	if(!$db) {
-    		$errmsg = mysql_error($db);
-    		print "Connection failed: $errmsg <br>";
-    		exit(1);
-    	}
+    	$db = new mysqli('localhost', 'cs143', '', 'CS143');
+        if($db->connect_errno > 0){
+            die('Unable to connect to database [' . $db->connect_error . ']');
+        }
 
-    	mysql_select_db("CS143", $db);
+    	// mysql_select_db("CS143", $db);
 
-    		$title = $_GET["title"];
-    		$company = $_GET["company"];
+    	$title = $_GET["title"];
+    	$company = $_GET["company"];
         $year = $_GET["year"];
-    		$rate = $_GET["rate"];
+    	$rate = $_GET["rate"];
         $genre = "";
 
         foreach($_GET["genre"] as $g) {
@@ -86,8 +84,8 @@
         }
 
         //get the largest id number
-        $rowSQL = mysql_query("SELECT MAX(id) AS max FROM MaxMovieID;");
-        $row = mysql_fetch_array($rowSQL);
+        $rowSQL = $db->query("SELECT MAX(id) AS max FROM MaxMovieID;");
+        $row = mysqli_fetch_array($rowSQL);
         $largestNumber = $row["max"];
 
         $query = "INSERT INTO Movie(id,title,year,rating,company)
@@ -96,15 +94,15 @@
         $query2 = "INSERT INTO MovieGenre(mid, genre)
                   VALUES ($largestNumber+1, '{$genre}');";
         $query3 = "UPDATE MaxMovieID SET id = $largestNumber+1;";
-    		$result = mysql_query($query, $db);
-        mysql_query($query2, $db);
-        mysql_query($query3, $db);
+    	mysqli_query($db, $query);
+        mysqli_query($db, $query2);
+        mysqli_query($db, $query3);
 
         if($title != NULL) {
           print "add success: $title $company $year $rate $genre";
         }
 
-    	mysql_close($db)
+        $db->close();
     ?>
   </div>
 

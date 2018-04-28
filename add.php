@@ -99,8 +99,8 @@
 
 
         // echo $type;
-        echo "$query";
-        $res = $db->query($query);
+        // echo "$query";
+        // $res = $db->query($query);
         mysqli_query($db, $query);
         mysqli_query($db, $query2);
 

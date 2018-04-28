@@ -25,50 +25,43 @@
         <div class="form-group">
           <label for="director">Director</label>
               <?php
-                $db = mysql_connect("localhost", "cs143", "");
-                if(!$db) {
-                  $errmsg = mysql_error($db);
-                  print "Connection failed: $errmsg <br>";
-                  exit(1);
+                $db = new mysqli('localhost', 'cs143', '', 'CS143');
+                if($db->connect_errno > 0){
+                    die('Unable to connect to database [' . $db->connect_error . ']');
                 }
-                mysql_select_db("CS143", $db);
 
-                $sql = mysql_query("SELECT first, last, dob FROM Director");
-                if(mysql_num_rows($sql)) {
+                $sql = $db->query("SELECT first, last, dob FROM Director");
+                if(mysqli_num_rows($sql)) {
                 $select = '<select class="form-control" name="director">';
-                while($rs = mysql_fetch_array($sql)){
+                while($rs = mysqli_fetch_array($sql)){
                       $select.='<option value="'.$rs['first'].' '.$rs['last'].'">'.$rs['first'].' '.$rs['last'].'  ['.$rs['dob'].']'.'</option>';
                   }
                 }
                 $select.='</select>';
                 echo $select;
 
-                mysql_close($db);
+                $db->close();
                 ?>
         </div>
         <button type="submit" name="add" class="btn btn-default">Add!</button>
     </form>
 
     <?php
-    	$db = mysql_connect("localhost", "cs143", "");
-    	if(!$db) {
-    		$errmsg = mysql_error($db);
-    		print "Connection failed: $errmsg <br>";
-    		exit(1);
-    	}
-
-    	mysql_select_db("CS143", $db);
+    	$db = new mysqli('localhost', 'cs143', '', 'CS143');
+      if($db->connect_errno > 0){
+          die('Unable to connect to database [' . $db->connect_error . ']');
+      }
 
   		$title = $_GET["title"];
   		$director = $_GET["director"];
 
       if (isset($title, $director)) {
         //get the Movie id number
-        $rowSQL = mysql_query("SELECT id as mid FROM Movie WHERE title = '$title';");
-        $row = mysql_fetch_array($rowSQL);
+        $rowSQL = $db->query("SELECT id as mid FROM Movie WHERE title = '$title';");
+        $row = mysqli_fetch_array($rowSQL);
         $pieces = explode(" ", $director);
-        $didSQL = mysql_query("SELECT id as did FROM Director WHERE first = '$pieces[0]' and last = '$pieces[1]' ;");
-        $didRow = mysql_fetch_array($didSQL);
+        $didSQL = $db->query("SELECT id as did FROM Director WHERE first = '$pieces[0]' and last = '$pieces[1]' ;");
+        $didRow = mysqli_fetch_array($didSQL);
         // echo $row[1];
         $mid = $row["mid"];
         $did = $didRow["did"];
@@ -78,12 +71,12 @@
         $query = "INSERT INTO MovieDirector(mid,did)
                   VALUES ($mid, $did);
                   ";
-        mysql_query($query, $db);
+        mysqli_query($db, $query);
         print "add success: $title, $director ";
       }
 
 
-    	mysql_close($db)
+      $db->close();
     ?>
   </div>
 
