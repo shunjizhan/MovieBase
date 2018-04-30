@@ -28,33 +28,31 @@
     <?php
       include "tables.inc";
 
-      $db = mysql_connect("localhost", "cs143", "");
-      if(!$db) {
-        $errmsg = mysql_error($db);
-        print "Connection failed: $errmsg <br>";
-        exit(1);
+      $db = new mysqli('localhost', 'cs143', '', 'CS143');
+      if($db->connect_errno > 0){
+          die('Unable to connect to database [' . $db->connect_error . ']');
       }
-
-      mysql_select_db("CS143", $db);
 
       $search = $_GET["search"];
       $id = $_GET["id"];
 
       if (isset($id)) {                   // display actor information
-        $query = "select id, concat(last,' ',first) as 'Actor Name', sex, dob as 'Birthday', dod as 'Pass Away' from Actor where id='{$id}'";
-        $result = mysql_query($query, $db);  
 
+        $query = "select id, concat(last,' ',first) as 'Actor Name', sex, dob as 'Birthday', dod as 'Pass Away' from Actor where id='{$id}'";
+        $result = $db->query($query);
           $query2 = "SELECT m.title as 'Movie Title', ma.role as 'Role'
                      FROM MovieActor ma, Movie m
                      WHERE ma.aid='{$id}' and ma.mid = m.id";
-          $result2 =mysql_query($query2, $db);
-
+          
+          $result2 = $db->query($query2);
           $table = new Table($result, 0, "Actor's Information:");
 
           $table2 = new Table($result2, 0, "Actor's Movies and Role:");
 
       } else if(isset($search)) {           // show search result
-        $keywords = explode(" ", mysql_real_escape_string($search));
+        // echo "<h2>PHP is Fun!</h2>";
+
+        $keywords = explode(" ", mysqli_real_escape_string($db, $search));
         switch(count($keywords)) {
           case 0:
           case 1:
@@ -74,12 +72,12 @@
             $query = "SELECT * FROM Actor WHERE FALSE";
         }
 
-        $result = mysql_query($query, $db);
+        $result = $db->query($query);
 
         $table = new Table($result, 1, "Matching Actors");
       }
 
-      mysql_close($db);
+      $db->close();
     ?>
 
   </div>
