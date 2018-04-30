@@ -69,9 +69,9 @@
           $table = new Table($result, 1, "Matching Actors:");
 
           // Movies
-          $query = "SELECT * FROM Movie WHERE title LIKE '$keywords[0]'";
+          $query = "SELECT * FROM Movie WHERE title LIKE '%$keywords[0]%'";
           for($i = 1; $i < count($keywords); $i++) {
-            $query .= "AND title LIKE '$keywords[$i]'";
+            $query .= "AND title LIKE '%$keywords[$i]%'";
           }
 
           $result = $db->query($query);
