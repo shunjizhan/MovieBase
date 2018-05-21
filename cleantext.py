@@ -127,7 +127,7 @@ def sanitize(text):
     # 5. Remove all punctuation (including special characters that are not technically punctuation) except punctuation that ends a phrase or sentence and except embedded punctuation (so thirty-two remains intact). Common punctuation for ending sentences are the period (.), exclamation point (!), question mark (?). Common punctuation for ending phrases are the comma (,), semicolon (;), colon (:). While quotation marks and parentheses also start and end phrases, we will ignore them as it can get complicated. We can also RRR's favorite em-dash (--) as it varies (two hyphens, one hyphen, one dash, two dashes or an em-dash).
 
     # 6. Convert all text to lowercase.
-
+    text = text.lower()
     # 7. The order of these operations matters, but you are free to experiment and you may get the same results.
 
 
