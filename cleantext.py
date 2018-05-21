@@ -119,8 +119,8 @@ def sanitize(text):
     """
 
     # 1. Replace new lines and tab characters with a single space.
-    text = text.Replace("\t", " ")
-    text = text.Replace("\n", " ")
+    text = text.replace("\t", " ")
+    text = text.replace("\n", " ")
 
     # 2. Remove URLs. Replace them with the empty string ''. URLs typically look like [some text](http://www.ucla.edu) in the JSON.
     text = re.sub(r'^https?:\/\/.*[\r\n]*', '', text, flags=re.MULTILINE)
@@ -141,10 +141,6 @@ def sanitize(text):
     # 7. The order of these operations matters, but you are free to experiment and you may get the same results.
 
 
-
-
-
-
     # YOUR CODE GOES BELOW:
 
     return text
@@ -152,11 +148,11 @@ def sanitize(text):
 
 if __name__ == "__main__":
     filename = sys.argv[1]
-    # print filename
+    print (filename)
 
     lines_to_read = 10
-    for i in range(lines_to_read):
-        with open(filename) as fp:
+    with open(filename) as fp:
+        for _ in range(lines_to_read):
             line = fp.readline()
             content = json.loads(line)
             comment = content['body']
