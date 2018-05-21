@@ -123,8 +123,14 @@ def sanitize(text):
     text = text.replace("\n", " ")
 
     # 2. Remove URLs. Replace them with the empty string ''. URLs typically look like [some text](http://www.ucla.edu) in the JSON.
-    text = re.sub(r'^https?:\/\/.*[\r\n]*', '', text, flags=re.MULTILINE)
-    
+    # text = re.sub(r'^https?:\/\/.*[\r\n]*', '', text, flags=re.MULTILINE)
+
+    # urls = re.findall(r'\[.*\]\(https?://\S*\s|\Z', text)
+    # urls = re.findall(r'https?://\S*\s|\Z', text)
+    # print (urls)
+    text = re.sub(r'\[.*\]\(https?://\S*\s|\Z', '', text)
+    text = re.sub(r'https?://\S*\s|\Z', '', text)
+
     # 3. Split text on a single space. If there are multiple contiguous spaces, you will need to remove empty tokens after doing the split.
     splitted_text = text.split()
     new_str = ""
@@ -150,7 +156,7 @@ if __name__ == "__main__":
     filename = sys.argv[1]
     print (filename)
 
-    lines_to_read = 10
+    lines_to_read = 100
     with open(filename) as fp:
         for _ in range(lines_to_read):
             line = fp.readline()
@@ -158,6 +164,7 @@ if __name__ == "__main__":
             comment = content['body']
 
             print (sanitize(comment))
+            print()
             # pp.pprint(comment)
 
     # This is the Python main function.
