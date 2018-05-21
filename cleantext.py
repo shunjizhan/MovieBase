@@ -7,6 +7,9 @@ from __future__ import print_function
 import re
 import string
 import argparse
+import sys
+import json
+import pprint as pp
 
 
 __author__ = ""
@@ -106,6 +109,7 @@ _CONTRACTIONS = {
 # You may need to write regular expressions.
 
 def sanitize(text):
+    # pass
     """Do parse the text in variable "text" according to the spec, and return
     a LIST containing FOUR strings 
     1. The parsed text.
@@ -139,6 +143,19 @@ def sanitize(text):
 
 
 if __name__ == "__main__":
+    filename = sys.argv[1]
+    # print filename
+
+    lines_to_read = 10
+    for i in range(lines_to_read):
+        with open(filename) as fp:
+            line = fp.readline()
+            content = json.loads(line)
+            comment = content['body']
+
+            print (sanitize(comment))
+            # pp.pprint(comment)
+
     # This is the Python main function.
     # You should be able to run
     # python cleantext.py <filename>
