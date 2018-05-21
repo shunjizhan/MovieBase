@@ -131,11 +131,14 @@ def sanitize(text):
         if word in _CONTRACTIONS.keys():
             splitted_text[index] = _CONTRACTIONS[word]
 
-    
-
     # 4. Separate all external punctuation such as periods, commas, etc. into their own tokens (a token is a single piece of text with no spaces), but maintain punctuation within words (otherwise he'll gets parsed to hell and thirty-two gets parsed to thirtytwo). The phrase "The lazy fox, jumps over the lazy dog." should parse to "the lazy fox , jumps over the lazy dog ."
-
+    for index, word in enumerate(splitted_text):
+        if word[-1] in [',','.',';','?',':'] and len(word) > 1:
+            word1, word2 = word[:-1], word[-1]
+            splitted_text[index] = word1
+            splitted_text.insert(index+1, word2)
     # 5. Remove all punctuation (including special characters that are not technically punctuation) except punctuation that ends a phrase or sentence and except embedded punctuation (so thirty-two remains intact). Common punctuation for ending sentences are the period (.), exclamation point (!), question mark (?). Common punctuation for ending phrases are the comma (,), semicolon (;), colon (:). While quotation marks and parentheses also start and end phrases, we will ignore them as it can get complicated. We can also RRR's favorite em-dash (--) as it varies (two hyphens, one hyphen, one dash, two dashes or an em-dash).
+    
 
     # 6. Convert all text to lowercase.
     text = text.lower()
