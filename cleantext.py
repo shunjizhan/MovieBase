@@ -147,7 +147,7 @@ def sanitize(text):
 
     # YOUR CODE GOES BELOW:
 
-    return [parsed_text, unigrams, bigrams, trigrams]
+    return text
 
 
 if __name__ == "__main__":
