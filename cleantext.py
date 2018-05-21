@@ -124,13 +124,14 @@ def sanitize(text):
 
     # 2. Remove URLs. Replace them with the empty string ''. URLs typically look like [some text](http://www.ucla.edu) in the JSON.
     text = re.sub(r'^https?:\/\/.*[\r\n]*', '', text, flags=re.MULTILINE)
-    
+
     # 3. Split text on a single space. If there are multiple contiguous spaces, you will need to remove empty tokens after doing the split.
     splitted_text = text.split()
-    new_str = ""
-    for splitted in splitted_text:
-        new_str = new_str + splitted + " "
-    text = new_str
+    for index, word in enumerate(splitted_text):
+        if word in _CONTRACTIONS.keys():
+            splitted_text[index] = _CONTRACTIONS[word]
+
+    
 
     # 4. Separate all external punctuation such as periods, commas, etc. into their own tokens (a token is a single piece of text with no spaces), but maintain punctuation within words (otherwise he'll gets parsed to hell and thirty-two gets parsed to thirtytwo). The phrase "The lazy fox, jumps over the lazy dog." should parse to "the lazy fox , jumps over the lazy dog ."
 
@@ -142,6 +143,10 @@ def sanitize(text):
 
 
     # YOUR CODE GOES BELOW:
+    new_str = ""
+    for splitted in splitted_text:
+        new_str = new_str + splitted + " "
+    text = new_str
 
     return text
 
