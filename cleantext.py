@@ -115,6 +115,8 @@ def sanitize(text):
     """
 
     # 1. Replace new lines and tab characters with a single space.
+    text = text.Replace("\t", " ")
+    text = text.Replace("\n", " ")
 
     # 2. Remove URLs. Replace them with the empty string ''. URLs typically look like [some text](http://www.ucla.edu) in the JSON.
 
