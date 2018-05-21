@@ -119,9 +119,11 @@ def sanitize(text):
     """
 
     # 1. Replace new lines and tab characters with a single space.
+    text = text.Replace("\t", " ")
+    text = text.Replace("\n", " ")
 
     # 2. Remove URLs. Replace them with the empty string ''. URLs typically look like [some text](http://www.ucla.edu) in the JSON.
-
+    text = re.sub(r'^https?:\/\/.*[\r\n]*', '', text, flags=re.MULTILINE)
     # 3. Split text on a single space. If there are multiple contiguous spaces, you will need to remove empty tokens after doing the split.
 
     # 4. Separate all external punctuation such as periods, commas, etc. into their own tokens (a token is a single piece of text with no spaces), but maintain punctuation within words (otherwise he'll gets parsed to hell and thirty-two gets parsed to thirtytwo). The phrase "The lazy fox, jumps over the lazy dog." should parse to "the lazy fox , jumps over the lazy dog ."
@@ -129,7 +131,7 @@ def sanitize(text):
     # 5. Remove all punctuation (including special characters that are not technically punctuation) except punctuation that ends a phrase or sentence and except embedded punctuation (so thirty-two remains intact). Common punctuation for ending sentences are the period (.), exclamation point (!), question mark (?). Common punctuation for ending phrases are the comma (,), semicolon (;), colon (:). While quotation marks and parentheses also start and end phrases, we will ignore them as it can get complicated. We can also RRR's favorite em-dash (--) as it varies (two hyphens, one hyphen, one dash, two dashes or an em-dash).
 
     # 6. Convert all text to lowercase.
-
+    text = text.lower()
     # 7. The order of these operations matters, but you are free to experiment and you may get the same results.
 
 
