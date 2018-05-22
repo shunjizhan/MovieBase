@@ -187,13 +187,13 @@ def sanitize(text):
             new_str = new_str + splitted_text[i] + "_" + splitted_text[i+1] + "_" + splitted_text[i+2] + " "
     trigrams = new_str[:-1]
 
-    print (temp, '\n', parsed_text,'\n', unigrams,'\n', bigrams,'\n', trigrams, '\n')
+    return [parsed_text, unigrams, bigrams, trigrams]
 
 if __name__ == "__main__":
     filename = sys.argv[1]
     print (filename)
 
-    lines_to_read = 100
+    lines_to_read = 1
 
     with open(filename) as fp:
         for _ in range(lines_to_read):
@@ -201,7 +201,7 @@ if __name__ == "__main__":
             content = json.loads(line)
             comment = content['body']
 
-            sanitize(comment)
+            print(str(sanitize(comment)))
             # print()
             # pp.pprint(comment)
 
