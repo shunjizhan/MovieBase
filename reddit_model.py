@@ -17,4 +17,20 @@ if __name__ == "__main__":
     sc   = SparkContext(conf=conf)
     sqlContext = SQLContext(sc)
     sc.addPyFile("cleantext.py")
-    main(sqlContext)
+
+    # Task 1
+    comments = sqlContext.read.json("comments-minimal.json")	# data_frame for comments
+    submissions = sqlContext.read.json("submissions.json")		# data_frame for submissions
+    labeled_data = sqlContext.read.load("labeled_data.csv", format="csv", sep=":", inferSchema="true", header="true")
+
+    # comments.select("body").show()
+
+    # Task 2
+    comments.createOrReplaceTempView("comments_view")			# Register the df as a SQL temporary view
+    submissions.createOrReplaceTempView("submissions_view")
+    labeled_data.createOrReplaceTempView("labeled_data_view")
+
+    
+
+    # labelded_comments = sqlContext.sql("	SELECT id, body, labeldem, labelgop, labeldjt FROM comments_view, labeled_data_view WHERE id = Input_id LIMIT 10")
+    # labelded_comments.show()
