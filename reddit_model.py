@@ -18,7 +18,8 @@ def str_to_tokens(comments):
     res_str = ""
     # sanitized_token_list = sanitize(comments)
     for token_str in comments:
-        res_str = res_str+token_str
+        res_str = res_str + ' ' + token_str
+        print (res_str.split())
     return res_str.split()
 
 
@@ -69,9 +70,11 @@ if __name__ == "__main__":
     # sqlContext.udf.register("grams", str_to_tokens, StringType())
     udfValueToGrams = udf(sanitize, ArrayType(StringType()))
     labelded_comments = labelded_comments.withColumn("grams", udfValueToGrams("body"))
+    labelded_comments.show()
 
-    # Task 5
+    # # Task 5
     udfGramsToToken = udf(str_to_tokens, ArrayType(StringType()))
     labelded_comments = labelded_comments.withColumn("tokens", udfGramsToToken("grams"))
-
     labelded_comments.show()
+
+    # labelded_comments.show()
