@@ -1,6 +1,7 @@
 from __future__ import print_function
 from pyspark import SparkConf, SparkContext
 from pyspark.sql import SQLContext
+from pyspark.ml.feature import CountVectorizer
 
 # IMPORT OTHER MODULES HERE
 from cleantext import sanitize
@@ -52,7 +53,7 @@ if __name__ == "__main__":
     labeled_data.createOrReplaceTempView("labeled_data_view")
 
     # labelded_comments = sqlContext.sql("  SELECT id, body, labeldem, labelgop, labeldjt FROM comments_view, labeled_data_view WHERE id = Input_id LIMIT 10")
-    labelded_comments = sqlContext.sql("SELECT id, body, labeldem, labelgop, labeldjt FROM comments_view, labeled_data_view WHERE id = Input_id")
+    labelded_comments = sqlContext.sql("SELECT id, body, labeldjt FROM comments_view, labeled_data_view WHERE id = Input_id")
     # labelded_comments.show()
     # labelded_comments.printSchema()
 
@@ -77,4 +78,12 @@ if __name__ == "__main__":
     labelded_comments = labelded_comments.withColumn("tokens", udfGramsToToken("grams"))
     labelded_comments.show()
 
-    # labelded_comments.show()
+
+
+    # Task 6 A
+    # cv = CountVectorizer(inputCol='tokens', outputCol='features', binary=True, minDF=5)
+    
+    # model = cv.fit(labelded_comments)
+    # result = model.transform(labelded_comments)
+
+    # result.show()
