@@ -1,6 +1,7 @@
 from __future__ import print_function
 from pyspark import SparkConf, SparkContext
 from pyspark.sql import SQLContext
+from pyspark.ml.feature import CountVectorizer
 
 # IMPORT OTHER MODULES HERE
 from cleantext import sanitize
@@ -62,4 +63,14 @@ if __name__ == "__main__":
 
 
     # Task 5
+
+
+
+    # Task 6 A
+    cv = CountVectorizer(inputCol='grams', outputCol='features', binary=True, minDF=5)
+    
+    model = cv.fit(labelded_comments)
+    result = model.transform(labelded_comments)
+
+    result.show()
 
