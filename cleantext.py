@@ -187,7 +187,7 @@ def sanitize(text):
             new_str = new_str + splitted_text[i] + "_" + splitted_text[i+1] + "_" + splitted_text[i+2] + " "
     trigrams = new_str[:-1]
 
-    return [parsed_text, unigrams, bigrams, trigrams]
+    return [unigrams, bigrams, trigrams]
 
 if __name__ == "__main__":
     filename = sys.argv[1]
