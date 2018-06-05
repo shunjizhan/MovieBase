@@ -42,15 +42,18 @@ if __name__ == "__main__":
 
     # labelded_comments = sqlContext.sql("  SELECT id, body, labeldem, labelgop, labeldjt FROM comments_view, labeled_data_view WHERE id = Input_id LIMIT 10")
     labelded_comments = sqlContext.sql("SELECT id, body, labeldem, labelgop, labeldjt FROM comments_view, labeled_data_view WHERE id = Input_id")
-    comments_arr = labelded_comments.select("body").rdd.flatMap(lambda x: x).collect()
-    grams = []
-    for i in range(len(comments_arr)-1):
-        grams.append(sanitize(comments_arr[i]))
-    
-    print(grams, len(grams))
     # labelded_comments.show()
     # labelded_comments.printSchema()
     
     # Task 3
-    
     # Task 4
+    comments_arr = labelded_comments.select("body").rdd.flatMap(lambda x: x).collect()
+    grams = []
+    for i in range(len(comments_arr)):
+        grams.append(sanitize(comments_arr[i]))
+    
+    print(len(grams), len(comments_arr))
+
+
+    # Task 5
+
