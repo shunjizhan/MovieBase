@@ -3,7 +3,7 @@ from pyspark import SparkConf, SparkContext
 from pyspark.sql import SQLContext
 
 # IMPORT OTHER MODULES HERE
-import cleantext
+import clen
 
 def main(context):
     """Main function takes a Spark SQL context."""
@@ -19,9 +19,9 @@ if __name__ == "__main__":
     sc.addPyFile("cleantext.py")
 
     # Task 1
-    comments = sqlContext.read.json("comments-minimal.json")    # data_frame for comments
+    comments = sqlContext.read.json("comments-minimal-small.json")    # data_frame for comments
     submissions = sqlContext.read.json("submissions.json")		# data_frame for submissions
-    labeled_data = sqlContext.read.load("comments-minimal-small.csv", format="csv", sep=",", inferSchema="true", header="true")
+    labeled_data = sqlContext.read.load("comments-minimal.csv", format="csv", sep=",", inferSchema="true", header="true")
 
     # Task 2
     comments.createOrReplaceTempView("comments_view")			# Register the df as a SQL temporary view
