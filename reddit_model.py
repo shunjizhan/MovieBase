@@ -19,9 +19,13 @@ if __name__ == "__main__":
     sc.addPyFile("cleantext.py")
 
     # Task 1
-    comments = sqlContext.read.json("comments-minimal.json")    # data_frame for comments
-    submissions = sqlContext.read.json("submissions.json")		# data_frame for submissions
+    comments = sqlContext.read.json("comments-minimal-small.json")    # data_frame for comments
+    submissions = sqlContext.read.json("submissions-small.json")		# data_frame for submissions
     labeled_data = sqlContext.read.load("labeled_data.csv", format="csv", sep=",", inferSchema="true", header="true")
+
+    comments.show()
+    print('-'*50)
+    submissions.show()
 
     # Task 2
     comments.createOrReplaceTempView("comments_view")			# Register the df as a SQL temporary view
