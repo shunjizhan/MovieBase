@@ -52,7 +52,7 @@ if __name__ == "__main__":
     labeled_data.createOrReplaceTempView("labeled_data_view")
 
     # labelded_comments = sqlContext.sql("  SELECT id, body, labeldem, labelgop, labeldjt FROM comments_view, labeled_data_view WHERE id = Input_id LIMIT 10")
-    labelded_comments = sqlContext.sql("SELECT id, body, labeldem, labelgop, labeldjt FROM comments_view, labeled_data_view WHERE id = Input_id")
+    labelded_comments = sqlContext.sql("SELECT id, body, labeldjt FROM comments_view, labeled_data_view WHERE id = Input_id")
     # labelded_comments.show()
     # labelded_comments.printSchema()
 
