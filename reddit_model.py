@@ -3,7 +3,7 @@ from pyspark import SparkConf, SparkContext
 from pyspark.sql import SQLContext
 
 # IMPORT OTHER MODULES HERE
-import clen
+import cleantxt
 
 def main(context):
     """Main function takes a Spark SQL context."""
