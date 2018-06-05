@@ -50,9 +50,15 @@ if __name__ == "__main__":
     comments_arr = labelded_comments.select("body").rdd.flatMap(lambda x: x).collect()
     grams = []
     for i in range(len(comments_arr)):
-        grams.append(sanitize(comments_arr[i]))
+        return_list = []
+        sanitized_token_list = sanitize(comments_arr[i])
+        for token_str in sanitized_token_list:
+            lst = token_str.split()
+            return_list+= lst
+        grams.append(return_list)
     
-    print(len(grams), len(comments_arr))
+
+    print(grams, len(comments_arr))
 
 
     # Task 5
