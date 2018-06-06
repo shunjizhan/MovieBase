@@ -1,0 +1,1 @@
+{"class":"org.apache.spark.ml.tuning.CrossValidatorModel","timestamp":1528250720344,"sparkVersion":"2.3.0","uid":"CrossValidatorModel_4a9cb6d716b38e6fb970","paramMap":{"numFolds":3,"seed":880116102,"estimatorParamMaps":[[{"parent":"LogisticRegression_44259c1c9421dcbd8b23","name":"regParam","value":"1.0","isJson":"true"}]]},"avgMetrics":[],"persistSubModels":false}
