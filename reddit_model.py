@@ -20,10 +20,6 @@ def str_to_tokens(comments):
     # sanitized_token_list = sanitize(comments)
     for token_str in comments:
         res_str = res_str + ' ' + token_str
-<<<<<<< HEAD
-=======
-        print (res_str.split())
->>>>>>> a3597502a505b057af330c2e3cfa9826fe807c95
     return res_str.split()
 
 
@@ -89,8 +85,6 @@ if __name__ == "__main__":
     labelded_comments = labelded_comments.withColumn("tokens", udfGramsToToken("grams"))
     labelded_comments.show()
 
-<<<<<<< HEAD
-<<<<<<< HEAD
     # Task 6 A
     cv = CountVectorizer(inputCol='tokens', outputCol='features', binary=True, minDF=5)
 
@@ -111,25 +105,4 @@ if __name__ == "__main__":
 
 
 
-=======
 
-
-    # Task 6 A
-    # cv = CountVectorizer(inputCol='tokens', outputCol='features', binary=True, minDF=5)
-    
-    # model = cv.fit(labelded_comments)
-    # result = model.transform(labelded_comments)
-
-    # result.show()
->>>>>>> a3597502a505b057af330c2e3cfa9826fe807c95
-=======
-
-
-    # Task 6 A
-    # cv = CountVectorizer(inputCol='tokens', outputCol='features', binary=True, minDF=5)
-    
-    # model = cv.fit(labelded_comments)
-    # result = model.transform(labelded_comments)
-
-    # result.show()
->>>>>>> a3597502a505b057af330c2e3cfa9826fe807c95
