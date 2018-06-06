@@ -171,6 +171,8 @@ if __name__ == "__main__":
 
     udfGramsToToken = udf(str_to_tokens, ArrayType(StringType()))
     all_comments = all_comments.withColumn("tokens", udfGramsToToken("grams"))
+    all_comments = all_comments.sample(False, 0.0001, None)
+
     # all_comments.show()
 
     all_comments = model.transform(all_comments)
@@ -190,28 +192,36 @@ if __name__ == "__main__":
     labeled_data = None
     submissions = None
 
-
-    result_pos = result_pos.sample(False, 0.0001, None)
-    result_neg = result_neg.sample(False, 0.0001, None)
-
+    # result_pos = result_pos.sample(False, 0.0000001, None)
+    # result_neg = result_neg.sample(False, 0.0000001, None)
 
     # result_pos.show()
     result_pos = result_pos.select('id', 'retrieved_on', 'title', 'state', 'pos')
-    result_pos.show()
+    # result_pos.show()
 
     # result_neg.show()
     result_neg = result_neg.select('id', 'neg')
-    result_neg.show()
+    # result_neg.show()
 
     final_result = result_pos.join(result_neg, result_pos.id == result_neg.id)
 
     result_pos = None
     result_neg = None
 
-    final_result.show()
-    final_result.write.parquet("task9.parquet")
+    # final_result.show()
+    # final_result.write.parquet("task9.parquet")
 
-    # Task 10
-    # result_pos.createOrReplaceTempView('posres')
-    # ten_1 = sqlContext.sql("SELECT count(*) FROM posres WHERE pos = 1")
-    # ten_1.show()
+    # df1 = result_pos.withColumn("id", monotonically_increasing_id())
+
+    # df2 = result_neg.withColumn("id", monotonically_increasing_id())
+
+    # df3 = df2.join(df1, "id", "inner").drop("id")
+    # print("hello!")
+
+    # Task 10 可以跑 但是show不出来
+    result_pos.createOrReplaceTempView('posres')
+    ten_1 = sqlContext.sql("SELECT count(*) FROM posres WHERE pos = 1")
+
+    final_result.createOrReplaceTempView('final_res')
+    ten_2 = sqlContext.sql("SELECT DATE(FROM_UNIXTIME(retrieved_on)), COUNT(pos)/COUNT(pos)+COUNT(neg) as 'Pos percent', COUNT(neg)/COUNT(pos)+COUNT(neg) as 'Neg percent', FROM final_res GROUP BY DATE(FROM_UNIXTIME(retrieved_on))")
+    ten_2.show()
