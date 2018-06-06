@@ -60,32 +60,21 @@ if __name__ == "__main__":
     submissions.createOrReplaceTempView("submissions_view")
     labeled_data.createOrReplaceTempView("labeled_data_view")
 
-    '''
     # labelded_comments = sqlContext.sql("  SELECT id, body, labeldem, labelgop, labeldjt FROM comments_view, labeled_data_view WHERE id = Input_id LIMIT 10")
     labelded_comments = sqlContext.sql("SELECT id, body, labeldjt FROM comments_view, labeled_data_view WHERE id = Input_id")
     # labelded_comments.show()
     # labelded_comments.printSchema()
 
-    # comments_arr = labelded_comments.select("body").rdd.flatMap(lambda x: x).collect()
-    # grams = []
-    # for i in range(len(comments_arr)):
-    #     return_list = []
-    #     sanitized_token_list = sanitize(comments_arr[i])
-    #     for token_str in sanitized_token_list:
-    #         lst = token_str.split()
-    #         return_list+= lst
-    #     grams.append(return_list)
-
     # Task 4
-    # sqlContext.udf.register("grams", str_to_tokens, StringType())
+    sqlContext.udf.register("grams", str_to_tokens, StringType())
     udfValueToGrams = udf(sanitize, ArrayType(StringType()))
     labelded_comments = labelded_comments.withColumn("grams", udfValueToGrams("body"))
-    labelded_comments.show()
+    # labelded_comments.show()
 
     # # Task 5
     udfGramsToToken = udf(str_to_tokens, ArrayType(StringType()))
     labelded_comments = labelded_comments.withColumn("tokens", udfGramsToToken("grams"))
-    labelded_comments.show()
+    # labelded_comments.show()
 
     # Task 6 A
     cv = CountVectorizer(inputCol='tokens', outputCol='features', binary=True, minDF=5)
@@ -93,8 +82,8 @@ if __name__ == "__main__":
     model = cv.fit(labelded_comments)
     result = model.transform(labelded_comments)
 
-    result.show()
-
+    # result.show()
+    '''
     # Task 6 B
     udfpos = udf(choose_label_pos, IntegerType())
     result = result.withColumn("pos", udfpos("labeldjt"))
@@ -161,9 +150,21 @@ if __name__ == "__main__":
     # comments.printSchema()
     # submissions.printSchema()
     all_comments = sqlContext.sql("SELECT c.retrieved_on, body, title, c.author_flair_text as state FROM comments_view c, submissions_view s where SUBSTR(link_id, 4) = s.id and not body like '%&gt%'")
-    all_comments.show(50)
+    # all_comments.show(50)
 
-    # posModel = CrossValidatorModel.load("www/pos.model")
-    # negModel = CrossValidatorModel.load("www/neg.model")
+    posModel = CrossValidatorModel.load("www/pos.model")
+    negModel = CrossValidatorModel.load("www/neg.model")
 
-    
+    # Task 9
+    udfValueToGrams = udf(sanitize, ArrayType(StringType()))
+    all_comments = all_comments.withColumn("grams", udfValueToGrams("body"))
+
+    udfGramsToToken = udf(str_to_tokens, ArrayType(StringType()))
+    all_comments = all_comments.withColumn("tokens", udfGramsToToken("grams"))
+    # all_comments.show()
+
+    all_comments = model.transform(all_comments)
+    result_pos = posModel.transform(all_comments)
+    result_neg = negModel.transform(all_comments)
+    result_pos.select('probability').show(50)
+    result_neg.select('probability').show(50)
