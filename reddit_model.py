@@ -6,7 +6,7 @@ from pyspark.ml.feature import CountVectorizer
 # IMPORT OTHER MODULES HERE
 from cleantext import sanitize
 from pyspark.sql.functions import udf
-from pyspark.sql.types import ArrayType, StringType
+from pyspark.sql.types import ArrayType, StringType, IntegerType
 
 
 def main(context):
@@ -19,8 +19,16 @@ def str_to_tokens(comments):
     res_str = ""
     # sanitized_token_list = sanitize(comments)
     for token_str in comments:
-        res_str = res_str+token_str
+        res_str = res_str + ' ' + token_str
     return res_str.split()
+
+
+def choose_label_pos(_type):
+    return 1 if _type == 1 else 0
+
+
+def choose_label_neg(_type):
+    return 1 if _type == -1 else 0
 
 
 if __name__ == "__main__":
@@ -76,13 +84,23 @@ if __name__ == "__main__":
     labelded_comments = labelded_comments.withColumn("tokens", udfGramsToToken("grams"))
     labelded_comments.show()
 
-
-
-
     # Task 6 A
     cv = CountVectorizer(inputCol='tokens', outputCol='features', binary=True, minDF=5)
-    
+
     model = cv.fit(labelded_comments)
     result = model.transform(labelded_comments)
 
     result.show()
+
+    # Task 6 B
+    udfpos = udf(choose_label_pos, IntegerType())
+    result = result.withColumn("pos", udfpos("labeldjt"))
+
+    udfneg = udf(choose_label_neg, IntegerType())
+    result = result.withColumn("neg", udfneg("labeldjt"))
+
+    result.show()
+
+
+
+

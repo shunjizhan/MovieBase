@@ -5,3 +5,4 @@ hw3/
 comments.parquet/
 labeled_data.parquet/
 submissions.parquet/
+__pycache__/
