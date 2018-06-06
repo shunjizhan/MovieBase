@@ -7,6 +7,7 @@ from pyspark.ml.feature import CountVectorizer
 from cleantext import sanitize
 from pyspark.sql.functions import udf
 from pyspark.sql.types import ArrayType, StringType, IntegerType
+from pyspark.ml.tuning import CrossValidatorModel
 
 
 def main(context):
@@ -51,15 +52,15 @@ if __name__ == "__main__":
     submissions = sqlContext.read.parquet("submissions.parquet")
     labeled_data = sqlContext.read.parquet("labeled_data.parquet")
     # comments.show()
-    # print('*' * 50)
+    # # print('*' * 50)
     # submissions.show()
 
     # Task 2
-    '''
     comments.createOrReplaceTempView("comments_view")           # Register the df as a SQL temporary view
     submissions.createOrReplaceTempView("submissions_view")
     labeled_data.createOrReplaceTempView("labeled_data_view")
 
+    '''
     # labelded_comments = sqlContext.sql("  SELECT id, body, labeldem, labelgop, labeldjt FROM comments_view, labeled_data_view WHERE id = Input_id LIMIT 10")
     labelded_comments = sqlContext.sql("SELECT id, body, labeldjt FROM comments_view, labeled_data_view WHERE id = Input_id")
     # labelded_comments.show()
@@ -155,5 +156,14 @@ if __name__ == "__main__":
     posModel.save("www/pos.model")
     negModel.save("www/neg.model")
     '''
+
+    # Task 8
+    # comments.printSchema()
+    # submissions.printSchema()
+    labelded_comments = sqlContext.sql("SELECT c.retrieved_on, body, title, c.author_flair_text as state FROM comments_view c, submissions_view s where SUBSTR(link_id, 4) = s.id")
+    labelded_comments.show()
+
+    # posModel = CrossValidatorModel.load("www/pos.model")
+    # negModel = CrossValidatorModel.load("www/neg.model")
 
     
