@@ -159,7 +159,7 @@ if __name__ == "__main__":
     # Task 8
     # comments.printSchema()
     # submissions.printSchema()
-    all_comments = sqlContext.sql("SELECT c.retrieved_on, body, title, c.author_flair_text as state FROM comments_view c, submissions_view s where SUBSTR(link_id, 4) = s.id and not body like '%&gt%'")
+    all_comments = sqlContext.sql("SELECT c.id, c.retrieved_on, body, title, c.author_flair_text as state FROM comments_view c, submissions_view s where SUBSTR(link_id, 4) = s.id and not body like '%&gt%'")
     # all_comments.show(50)
 
     posModel = CrossValidatorModel.load("www/pos.model")
@@ -185,12 +185,33 @@ if __name__ == "__main__":
     prob_to_neg = udf(neg_binary, IntegerType())
     result_neg = result_neg.withColumn("neg", prob_to_neg("probability"))
 
-    result_pos.show()
-    # print(all_comments.count(), result_pos.count(), result_neg.count())
-    # print(type(result_pos.pos))
-    # all_comments = all_comments.withColumn('pos', result_pos['pos'])
-    # all_comments.show()
+    all_comments = None
+    comments = None
+    labeled_data = None
+    submissions = None
 
-    # newdf = all_comments.sample(False, 0.002, None).join(result_pos.sample(False, 0.002, None), on = "retrieved_on", how = 'outer')
-    # print(type(newdf))
-    # newdf.show()
+
+    result_pos = result_pos.sample(False, 0.0001, None)
+    result_neg = result_neg.sample(False, 0.0001, None)
+
+
+    # result_pos.show()
+    result_pos = result_pos.select('id', 'retrieved_on', 'title', 'state', 'pos')
+    result_pos.show()
+
+    # result_neg.show()
+    result_neg = result_neg.select('id', 'neg')
+    result_neg.show()
+
+    final_result = result_pos.join(result_neg, result_pos.id == result_neg.id)
+
+    result_pos = None
+    result_neg = None
+
+    final_result.show()
+    final_result.write.parquet("task9.parquet")
+
+    # Task 10
+    # result_pos.createOrReplaceTempView('posres')
+    # ten_1 = sqlContext.sql("SELECT count(*) FROM posres WHERE pos = 1")
+    # ten_1.show()
