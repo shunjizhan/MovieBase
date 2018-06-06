@@ -93,68 +93,69 @@ if __name__ == "__main__":
     result = model.transform(labelded_comments)
 
     # result.show()
-    '''
+    
     # Task 6 B
-    udfpos = udf(choose_label_pos, IntegerType())
-    result = result.withColumn("pos", udfpos("labeldjt"))
+    # udfpos = udf(choose_label_pos, IntegerType())
+    # result = result.withColumn("pos", udfpos("labeldjt"))
 
-    udfneg = udf(choose_label_neg, IntegerType())
-    result = result.withColumn("neg", udfneg("labeldjt"))
+    # udfneg = udf(choose_label_neg, IntegerType())
+    # result = result.withColumn("neg", udfneg("labeldjt"))
 
-    result.show()
+    # # result.show()
 
-    # Task 7
-    pos = result.drop('id', 'body', 'labeldjt', 'grams', 'tokens', 'neg')
-    neg = result.drop('id', 'body', 'labeldjt', 'grams', 'tokens', 'pos')
-    pos = pos.toDF('features', 'label')
-    neg = neg.toDF('features', 'label')
-    # pospos.withColumnRenamed("features", "pos").withColumnRenamed("features", "label")
-    # neg.withColumnRenamed("features", "neg").withColumnRenamed("features", "label")
-    pos.show()
-    neg.show()
-    # Bunch of imports (may need more)
-    from pyspark.ml.classification import LogisticRegression
-    from pyspark.ml.tuning import CrossValidator, ParamGridBuilder
-    from pyspark.ml.evaluation import BinaryClassificationEvaluator
-    # Initialize two logistic regression models.
-    # Replace labelCol with the column containing the label, and featuresCol with the column containing the features.
-    poslr = LogisticRegression(labelCol="label", featuresCol="features", maxIter=10)
-    neglr = LogisticRegression(labelCol="label", featuresCol="features", maxIter=10)
-    # This is a binary classifier so we need an evaluator that knows how to deal with binary classifiers.
-    posEvaluator = BinaryClassificationEvaluator()
-    negEvaluator = BinaryClassificationEvaluator()
-    # There are a few parameters associated with logistic regression. We do not know what they are a priori.
-    # We do a grid search to find the best parameters. We can replace [1.0] with a list of values to try.
-    # We will assume the parameter is 1.0. Grid search takes forever.
-    posParamGrid = ParamGridBuilder().addGrid(poslr.regParam, [1.0]).build()
-    negParamGrid = ParamGridBuilder().addGrid(neglr.regParam, [1.0]).build()
-    # We initialize a 5 fold cross-validation pipeline.
-    posCrossval = CrossValidator(
-        estimator=poslr,
-        evaluator=posEvaluator,
-        estimatorParamMaps=posParamGrid,
-        numFolds=5)
-    negCrossval = CrossValidator(
-        estimator=neglr,
-        evaluator=negEvaluator,
-        estimatorParamMaps=negParamGrid,
-        numFolds=5)
-    # Although crossvalidation creates its own train/test sets for
-    # tuning, we still need a labeled test set, because it is not
-    # accessible from the crossvalidator (argh!)
-    # Split the data 50/50
-    posTrain, posTest = pos.randomSplit([0.5, 0.5])
-    negTrain, negTest = neg.randomSplit([0.5, 0.5])
-    # Train the models
-    print("Training positive classifier...")
-    posModel = posCrossval.fit(posTrain)
-    print("Training negative classifier...")
-    negModel = negCrossval.fit(negTrain)
+    # # Task 7
+    # pos = result.drop('id', 'body', 'labeldjt', 'grams', 'tokens', 'neg')
+    # neg = result.drop('id', 'body', 'labeldjt', 'grams', 'tokens', 'pos')
+    # pos = pos.toDF('features', 'label')
+    # neg = neg.toDF('features', 'label')
+    # # pospos.withColumnRenamed("features", "pos").withColumnRenamed("features", "label")
+    # # neg.withColumnRenamed("features", "neg").withColumnRenamed("features", "label")
+    # pos.show()
+    # neg.show()
+    # # Bunch of imports (may need more)
+    # from pyspark.ml.classification import LogisticRegression
+    # from pyspark.ml.tuning import CrossValidator, ParamGridBuilder
+    # from pyspark.ml.evaluation import BinaryClassificationEvaluator
+    # # Initialize two logistic regression models.
+    # # Replace labelCol with the column containing the label, and featuresCol with the column containing the features.
+    # poslr = LogisticRegression(labelCol="label", featuresCol="features", maxIter=10)
+    # neglr = LogisticRegression(labelCol="label", featuresCol="features", maxIter=10)
+    # # This is a binary classifier so we need an evaluator that knows how to deal with binary classifiers.
+    # posEvaluator = BinaryClassificationEvaluator()
+    # negEvaluator = BinaryClassificationEvaluator()
+    # # There are a few parameters associated with logistic regression. We do not know what they are a priori.
+    # # We do a grid search to find the best parameters. We can replace [1.0] with a list of values to try.
+    # # We will assume the parameter is 1.0. Grid search takes forever.
+    # posParamGrid = ParamGridBuilder().addGrid(poslr.regParam, [1.0]).build()
+    # negParamGrid = ParamGridBuilder().addGrid(neglr.regParam, [1.0]).build()
+    # # We initialize a 5 fold cross-validation pipeline.
+    # posCrossval = CrossValidator(
+    #     estimator=poslr,
+    #     evaluator=posEvaluator,
+    #     estimatorParamMaps=posParamGrid,
+    #     numFolds=5)
+    # negCrossval = CrossValidator(
+    #     estimator=neglr,
+    #     evaluator=negEvaluator,
+    #     estimatorParamMaps=negParamGrid,
+    #     numFolds=5)
+    # # Although crossvalidation creates its own train/test sets for
+    # # tuning, we still need a labeled test set, because it is not
+    # # accessible from the crossvalidator (argh!)
+    # # Split the data 50/50
+    # posTrain, posTest = pos.randomSplit([0.5, 0.5])
+    # negTrain, negTest = neg.randomSplit([0.5, 0.5])
+    # # Train the models
+    # print("Training positive classifier...")
+    # posModel = posCrossval.fit(posTrain)
+    # print("Training negative classifier...")
+    # negModel = negCrossval.fit(negTrain)
 
-    # Once we train the models, we don't want to do it again. We can save the models and load them again later.
-    posModel.save("www/pos.model")
-    negModel.save("www/neg.model")
-    '''
+    # # Once we train the models, we don't want to do it again. We can save the models and load them again later.
+    # posModel.save("www/pos.model")
+    # negModel.save("www/neg.model")
+    
+    # print("done")
 
     # Task 8
     # comments.printSchema()
@@ -173,55 +174,33 @@ if __name__ == "__main__":
     all_comments = all_comments.withColumn("tokens", udfGramsToToken("grams"))
     all_comments = all_comments.sample(False, 0.0001, None)
 
-    # all_comments.show()
-
     all_comments = model.transform(all_comments)
-    result_pos = posModel.transform(all_comments)
-    result_neg = negModel.transform(all_comments)
-    # result_pos.select('probability').show(50)
-    # result_neg.select('probability').show(50)
 
+    result_pos = posModel.transform(all_comments)
     prob_to_pos = udf(pos_binary, IntegerType())
     result_pos = result_pos.withColumn("pos", prob_to_pos("probability"))
+    result_pos = result_pos.select('id', 'retrieved_on', 'title', 'state', 'features', 'pos')
 
+    result_neg = negModel.transform(result_pos)
     prob_to_neg = udf(neg_binary, IntegerType())
     result_neg = result_neg.withColumn("neg", prob_to_neg("probability"))
+    final_result = result_neg.select('id', 'retrieved_on', 'title', 'state', 'pos', 'neg')
 
     all_comments = None
     comments = None
     labeled_data = None
     submissions = None
-
-    # result_pos = result_pos.sample(False, 0.0000001, None)
-    # result_neg = result_neg.sample(False, 0.0000001, None)
-
-    # result_pos.show()
-    result_pos = result_pos.select('id', 'retrieved_on', 'title', 'state', 'pos')
-    # result_pos.show()
-
-    # result_neg.show()
-    result_neg = result_neg.select('id', 'neg')
-    # result_neg.show()
-
-    final_result = result_pos.join(result_neg, result_pos.id == result_neg.id)
-
     result_pos = None
     result_neg = None
 
-    # final_result.show()
-    # final_result.write.parquet("task9.parquet")
-
-    # df1 = result_pos.withColumn("id", monotonically_increasing_id())
-
-    # df2 = result_neg.withColumn("id", monotonically_increasing_id())
-
-    # df3 = df2.join(df1, "id", "inner").drop("id")
-    # print("hello!")
+    final_result.printSchema()
+    final_result.show()
+    print ("done task 9")
+    final_result.write.parquet("task9.parquet")
 
     # Task 10 可以跑 但是show不出来
-    result_pos.createOrReplaceTempView('posres')
-    ten_1 = sqlContext.sql("SELECT count(*) FROM posres WHERE pos = 1")
-
-    final_result.createOrReplaceTempView('final_res')
-    ten_2 = sqlContext.sql("SELECT DATE(FROM_UNIXTIME(retrieved_on)), COUNT(pos)/COUNT(pos)+COUNT(neg) as 'Pos percent', COUNT(neg)/COUNT(pos)+COUNT(neg) as 'Neg percent', FROM final_res GROUP BY DATE(FROM_UNIXTIME(retrieved_on))")
-    ten_2.show()
+    # final_result.createOrReplaceTempView('final_res')
+    
+    # ten_1 = sqlContext.sql("SELECT count(*) FROM posres WHERE pos = 1")
+    # ten_2 = sqlContext.sql("SELECT DATE(FROM_UNIXTIME(retrieved_on)), COUNT(pos)/COUNT(pos)+COUNT(neg) as 'Pos percent', COUNT(neg)/COUNT(pos)+COUNT(neg) as 'Neg percent', FROM final_res GROUP BY DATE(FROM_UNIXTIME(retrieved_on))")
+    # ten_2.show()
