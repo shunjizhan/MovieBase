@@ -85,6 +85,7 @@ if __name__ == "__main__":
     labelded_comments = labelded_comments.withColumn("tokens", udfGramsToToken("grams"))
     labelded_comments.show()
 
+
     # Task 6 A
     cv = CountVectorizer(inputCol='tokens', outputCol='features', binary=True, minDF=5)
 
@@ -101,8 +102,4 @@ if __name__ == "__main__":
     result = result.withColumn("neg", udfneg("labeldjt"))
 
     result.show()
-
-
-
-
 
