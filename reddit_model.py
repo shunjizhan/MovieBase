@@ -160,8 +160,8 @@ if __name__ == "__main__":
     # Task 8
     # comments.printSchema()
     # submissions.printSchema()
-    labelded_comments = sqlContext.sql("SELECT c.retrieved_on, body, title, c.author_flair_text as state FROM comments_view c, submissions_view s where SUBSTR(link_id, 4) = s.id")
-    labelded_comments.show()
+    labelded_comments = sqlContext.sql("SELECT c.retrieved_on, body, title, c.author_flair_text as state FROM comments_view c, submissions_view s where SUBSTR(link_id, 4) = s.id and not body like '%&gt%'")
+    labelded_comments.show(50)
 
     # posModel = CrossValidatorModel.load("www/pos.model")
     # negModel = CrossValidatorModel.load("www/neg.model")
