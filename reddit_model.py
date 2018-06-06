@@ -78,12 +78,14 @@ if __name__ == "__main__":
     # sqlContext.udf.register("grams", str_to_tokens, StringType())
     udfValueToGrams = udf(sanitize, ArrayType(StringType()))
     labelded_comments = labelded_comments.withColumn("grams", udfValueToGrams("body"))
+    labelded_comments.show()
 
-    # Task 5
+    # # Task 5
     udfGramsToToken = udf(str_to_tokens, ArrayType(StringType()))
     labelded_comments = labelded_comments.withColumn("tokens", udfGramsToToken("grams"))
     labelded_comments.show()
 
+<<<<<<< HEAD
     # Task 6 A
     cv = CountVectorizer(inputCol='tokens', outputCol='features', binary=True, minDF=5)
 
@@ -104,3 +106,14 @@ if __name__ == "__main__":
 
 
 
+=======
+
+
+    # Task 6 A
+    # cv = CountVectorizer(inputCol='tokens', outputCol='features', binary=True, minDF=5)
+    
+    # model = cv.fit(labelded_comments)
+    # result = model.transform(labelded_comments)
+
+    # result.show()
+>>>>>>> a3597502a505b057af330c2e3cfa9826fe807c95
