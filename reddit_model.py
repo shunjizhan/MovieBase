@@ -6,7 +6,7 @@ from pyspark.ml.feature import CountVectorizer
 # IMPORT OTHER MODULES HERE
 from cleantext import sanitize
 from pyspark.sql.functions import udf
-from pyspark.sql.types import ArrayType, StringType, IntegerType
+from pyspark.sql.types import ArrayType, StringType, IntegerType, DoubleType
 from pyspark.ml.tuning import CrossValidatorModel
 
 
@@ -30,6 +30,14 @@ def choose_label_pos(_type):
 
 def choose_label_neg(_type):
     return 1 if _type == -1 else 0
+
+
+def pos_binary(posibility):
+    return 1 if posibility > 0.2 else 0
+
+
+def neg_binary(posibility):
+    return 1 if posibility > 0.25 else 0
 
 
 if __name__ == "__main__":
@@ -166,5 +174,17 @@ if __name__ == "__main__":
     all_comments = model.transform(all_comments)
     result_pos = posModel.transform(all_comments)
     result_neg = negModel.transform(all_comments)
-    result_pos.select('probability').show(50)
-    result_neg.select('probability').show(50)
+    # result_pos.select('probability').show(50)
+    # result_neg.select('probability').show(50)
+
+    prob_to_pos = udf(pos_binary, DoubleType())
+    result_pos = result_pos.withColumn("pos", prob_to_pos("probability"))
+
+    prob_to_neg = udf(neg_binary, DoubleType())
+    result_neg = result_neg.withColumn("neg", prob_to_neg("probability"))
+
+    # print(all_comments.count(), result_pos.count(), result_neg.count())
+    # print(type(result_pos.pos))
+    # all_comments = all_comments.withColumn('pos', result_pos['pos'])
+    # all_comments.show()
+
