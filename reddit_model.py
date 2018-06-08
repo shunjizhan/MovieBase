@@ -41,11 +41,11 @@ def choose_label_neg(_type):
 def pos_binary(posibility):
     # for e in posibility:
     #     print(e)
-    return 1 if posibility[0] > 0.2 else 0
+    return 1 if posibility[1] > 0.2 else 0
 
 
 def neg_binary(posibility):
-    return 1 if posibility[0] > 0.25 else 0
+    return 1 if posibility[1] > 0.25 else 0
 
 
 if __name__ == "__main__":
@@ -163,11 +163,11 @@ if __name__ == "__main__":
 
     # print("done")
 
-    '''
+    
     # Task 8
     # comments.printSchema()
     # submissions.printSchema()
-    all_comments = sqlContext.sql("SELECT c.id, c.retrieved_on, body, title, c.author_flair_text as state FROM comments_view c, submissions_view s where SUBSTR(link_id, 4) = s.id and not body like '%&gt%'")
+    all_comments = sqlContext.sql("SELECT c.id, c.retrieved_on, body, c.score as comment_score, s.score as story_score, title, c.author_flair_text as state FROM comments_view c, submissions_view s where SUBSTR(link_id, 4) = s.id and not body like '%&gt%'")
     # all_comments.show(50)
 
     posModel = CrossValidatorModel.load("www/pos.model")
@@ -186,12 +186,12 @@ if __name__ == "__main__":
     result_pos = posModel.transform(all_comments)
     prob_to_pos = udf(pos_binary, IntegerType())
     result_pos = result_pos.withColumn("pos", prob_to_pos("probability"))
-    result_pos = result_pos.select('id', 'retrieved_on', 'title', 'state', 'features', 'pos')
+    result_pos = result_pos.select('id', 'retrieved_on', 'comment_sore', 'story_score', 'title', 'state', 'features', 'pos')
 
     result_neg = negModel.transform(result_pos)
     prob_to_neg = udf(neg_binary, IntegerType())
     result_neg = result_neg.withColumn("neg", prob_to_neg("probability"))
-    final_result = result_neg.select('id', 'retrieved_on', 'title', 'state', 'pos', 'neg')
+    final_result = result_neg.select('id', 'retrieved_on', 'comment_sore', 'story_score', 'title', 'state', 'pos', 'neg')
 
     all_comments = None
     comments = None
@@ -201,30 +201,36 @@ if __name__ == "__main__":
     result_neg = None
 
     final_result.printSchema()
-    # final_result.show()
+    final_result.show()
     print ("done task 9")
     final_result.write.parquet("task9.parquet")
-    '''
+    
+
     # Task 10 可以跑 但是show不出来
+    # final_result = sqlContext.read.parquet("task9.parquet")
+    # final_result.createOrReplaceTempView('final_res')
 
-    final_result = sqlContext.read.parquet("task9.parquet")
-    final_result.createOrReplaceTempView('final_res')
+    # # TASK 10 #1
+    # ten_1 = sqlContext.sql('SELECT title as submissions, AVG(pos) as pos_percent, AVG(neg) as neg_percent FROM final_res GROUP BY title')
 
-    # TASK 10 #1
-    ten_1 = sqlContext.sql('SELECT title as submissions, COUNT(pos)/(COUNT(neg)+COUNT(pos)) as pos_percent, COUNT(neg)/(COUNT(neg)+COUNT(pos)) as neg_percent FROM final_res GROUP BY title')
+    # # TASK 10 #2
+    # ten_2 = sqlContext.sql('SELECT FROM_UNIXTIME(retrieved_on, "YYYY-MM-dd") as which_date, AVG(pos) as pos_percent, AVG(neg) as neg_percent FROM final_res GROUP BY FROM_UNIXTIME(retrieved_on, "YYYY-MM-dd")')
 
-    # TASK 10 #2
-    ten_2 = sqlContext.sql('SELECT FROM_UNIXTIME(retrieved_on, "YYYY-MM-dd") as which_date, COUNT(pos)/(COUNT(neg)+COUNT(pos)) as pos_percent, COUNT(neg)/(COUNT(neg)+COUNT(pos)) as neg_percent FROM final_res GROUP BY FROM_UNIXTIME(retrieved_on, "YYYY-MM-dd")')
+    # # TASK 10 #3
+    # states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'District of Columbia', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming']
+    # ten_3 = sqlContext.sql('SELECT state, AVG(pos) as pos_percent, AVG(neg) as neg_percent FROM final_res GROUP BY state')
+    # ten_3 = ten_3.where(ten_3.state.isin(states))
 
-    # TASK 10 #3
-    states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'District of Columbia', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming']
-    ten_3 = sqlContext.sql('SELECT state, COUNT(pos)/(COUNT(neg)+COUNT(pos)) as pos_percent, COUNT(neg)/(COUNT(neg)+COUNT(pos)) as neg_percent FROM final_res GROUP BY state')
-    ten_3 = ten_3.where(ten_3.state.isin(states))
+    # # TASK 10 #4
+    # ten_4_a = sqlContext.sql('SELECT comment_score, AVG(pos) as pos_percent, AVG(neg) as neg_percent FROM FROM final_res GROUP BY  GROUP BY comment_score')
+    # ten_4_b = sqlContext.sql('SELECT story_score, AVG(pos) as pos_percent, AVG(neg) as neg_percent FROM FROM final_res GROUP BY  GROUP BY story_score')
 
-    ten_1.show()
-    ten_2.show()
-    ten_3.show()
 
+    # ten_1.show()
+    # ten_2.show()
+    # ten_3.show()
+
+    # final_result.describe(['pos']).show()
     # TASK 10 #4
     # ten_4
 
