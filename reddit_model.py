@@ -163,7 +163,7 @@ if __name__ == "__main__":
 
     # print("done")
 
-    '''
+    
     # Task 8
     # comments.printSchema()
     # submissions.printSchema()
@@ -179,7 +179,6 @@ if __name__ == "__main__":
 
     udfGramsToToken = udf(str_to_tokens, ArrayType(StringType()))
     all_comments = all_comments.withColumn("tokens", udfGramsToToken("grams"))
-    all_comments = all_comments.sample(False, 0.0001, None)
 
     all_comments = model.transform(all_comments)
 
@@ -204,14 +203,14 @@ if __name__ == "__main__":
     final_result.show()
     print ("done task 9")
     final_result.write.parquet("task9.parquet")
-    '''
-
+    
+    
     # Task 10 可以跑 但是show不出来
     final_result = sqlContext.read.parquet("task9.parquet")
     final_result.createOrReplaceTempView('final_res')
-
+    # final_result.show()
     # TASK 10 #1
-    ten_1 = sqlContext.sql('SELECT title as submissions, AVG(pos) as pos_percent, AVG(neg) as neg_percent FROM final_res GROUP BY title')
+    ten_1 = sqlContext.sql('SELECT title, AVG(pos) as pos_percent, AVG(neg) as neg_percent FROM final_res GROUP BY title')
 
     # TASK 10 #2
     ten_2 = sqlContext.sql('SELECT FROM_UNIXTIME(retrieved_on, "YYYY-MM-dd") as which_date, AVG(pos) as pos_percent, AVG(neg) as neg_percent FROM final_res GROUP BY FROM_UNIXTIME(retrieved_on, "YYYY-MM-dd")')
@@ -225,10 +224,12 @@ if __name__ == "__main__":
     ten_4_a = sqlContext.sql('SELECT comment_score, AVG(pos) as pos_percent, AVG(neg) as neg_percent FROM  final_res  GROUP BY comment_score')
     ten_4_b = sqlContext.sql('SELECT story_score, AVG(pos) as pos_percent, AVG(neg) as neg_percent FROM final_res GROUP BY story_score')
 
-    ten_2.repartition(1).write.format("com.databricks.spark.csv").option("header", "true").save("time_data.csv")
-    ten_3.repartition(1).write.format("com.databricks.spark.csv").option("header", "true").save("state_data.csv")
-    ten_4_b.repartition(1).write.format("com.databricks.spark.csv").option("header", "true").save("submission_score.csv")
-    ten_4_a.repartition(1).write.format("com.databricks.spark.csv").option("header", "true").save("comment_score.csv")
+    # ten_2.repartition(1).write.format("com.databricks.spark.csv").option("header", "true").save("time_data.csv")
+    # ten_3.repartition(1).write.format("com.databricks.spark.csv").option("header", "true").save("state_data.csv")
+    # ten_4_b.repartition(1).write.format("com.databricks.spark.csv").option("header", "true").save("submission_score.csv")
+    # ten_4_a.repartition(1).write.format("com.databricks.spark.csv").option("header", "true").save("comment_score.csv")
     
-
+    ten_1.createOrReplaceTempView('deli')
+    deli_4a = sqlContext.sql('SELECT title FROM deli order by pos_percent desc limit 10')
+    deli_4a = sqlContext.sql('SELECT title FROM deli order by neg_percent desc limit 10')
 
