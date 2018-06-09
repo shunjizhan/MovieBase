@@ -186,12 +186,12 @@ if __name__ == "__main__":
     result_pos = posModel.transform(all_comments)
     prob_to_pos = udf(pos_binary, IntegerType())
     result_pos = result_pos.withColumn("pos", prob_to_pos("probability"))
-    result_pos = result_pos.select('id', 'retrieved_on', 'comment_sore', 'story_score', 'title', 'state', 'features', 'pos')
+    result_pos = result_pos.select('id', 'retrieved_on', 'comment_score', 'story_score', 'title', 'state', 'features', 'pos')
 
     result_neg = negModel.transform(result_pos)
     prob_to_neg = udf(neg_binary, IntegerType())
     result_neg = result_neg.withColumn("neg", prob_to_neg("probability"))
-    final_result = result_neg.select('id', 'retrieved_on', 'comment_sore', 'story_score', 'title', 'state', 'pos', 'neg')
+    final_result = result_neg.select('id', 'retrieved_on', 'comment_score', 'story_score', 'title', 'state', 'pos', 'neg')
 
     all_comments = None
     comments = None
