@@ -163,7 +163,7 @@ if __name__ == "__main__":
 
     # print("done")
 
-    
+    '''
     # Task 8
     # comments.printSchema()
     # submissions.printSchema()
@@ -204,34 +204,31 @@ if __name__ == "__main__":
     final_result.show()
     print ("done task 9")
     final_result.write.parquet("task9.parquet")
-    
+    '''
 
     # Task 10 可以跑 但是show不出来
-    # final_result = sqlContext.read.parquet("task9.parquet")
-    # final_result.createOrReplaceTempView('final_res')
+    final_result = sqlContext.read.parquet("task9.parquet")
+    final_result.createOrReplaceTempView('final_res')
 
-    # # TASK 10 #1
-    # ten_1 = sqlContext.sql('SELECT title as submissions, AVG(pos) as pos_percent, AVG(neg) as neg_percent FROM final_res GROUP BY title')
+    # TASK 10 #1
+    ten_1 = sqlContext.sql('SELECT title as submissions, AVG(pos) as pos_percent, AVG(neg) as neg_percent FROM final_res GROUP BY title')
 
-    # # TASK 10 #2
-    # ten_2 = sqlContext.sql('SELECT FROM_UNIXTIME(retrieved_on, "YYYY-MM-dd") as which_date, AVG(pos) as pos_percent, AVG(neg) as neg_percent FROM final_res GROUP BY FROM_UNIXTIME(retrieved_on, "YYYY-MM-dd")')
+    # TASK 10 #2
+    ten_2 = sqlContext.sql('SELECT FROM_UNIXTIME(retrieved_on, "YYYY-MM-dd") as which_date, AVG(pos) as pos_percent, AVG(neg) as neg_percent FROM final_res GROUP BY FROM_UNIXTIME(retrieved_on, "YYYY-MM-dd")')
 
-    # # TASK 10 #3
-    # states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'District of Columbia', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming']
-    # ten_3 = sqlContext.sql('SELECT state, AVG(pos) as pos_percent, AVG(neg) as neg_percent FROM final_res GROUP BY state')
-    # ten_3 = ten_3.where(ten_3.state.isin(states))
+    # TASK 10 #3
+    states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'District of Columbia', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming']
+    ten_3 = sqlContext.sql('SELECT state, AVG(pos) as pos_percent, AVG(neg) as neg_percent FROM final_res GROUP BY state')
+    ten_3 = ten_3.where(ten_3.state.isin(states))
 
-    # # TASK 10 #4
-    # ten_4_a = sqlContext.sql('SELECT comment_score, AVG(pos) as pos_percent, AVG(neg) as neg_percent FROM FROM final_res GROUP BY  GROUP BY comment_score')
-    # ten_4_b = sqlContext.sql('SELECT story_score, AVG(pos) as pos_percent, AVG(neg) as neg_percent FROM FROM final_res GROUP BY  GROUP BY story_score')
-
-
-    # ten_1.show()
-    # ten_2.show()
-    # ten_3.show()
-
-    # final_result.describe(['pos']).show()
     # TASK 10 #4
-    # ten_4
+    ten_4_a = sqlContext.sql('SELECT comment_score, AVG(pos) as pos_percent, AVG(neg) as neg_percent FROM  final_res  GROUP BY comment_score')
+    ten_4_b = sqlContext.sql('SELECT story_score, AVG(pos) as pos_percent, AVG(neg) as neg_percent FROM final_res GROUP BY story_score')
+
+    ten_2.repartition(1).write.format("com.databricks.spark.csv").option("header", "true").save("time_data.csv")
+    ten_3.repartition(1).write.format("com.databricks.spark.csv").option("header", "true").save("state_data.csv")
+    ten_4_b.repartition(1).write.format("com.databricks.spark.csv").option("header", "true").save("submission_score.csv")
+    ten_4_a.repartition(1).write.format("com.databricks.spark.csv").option("header", "true").save("comment_score.csv")
+    
 
 
