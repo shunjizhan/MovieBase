@@ -85,10 +85,14 @@ shp_info = m.readshapefile('st99_d00', 'states', drawbounds=True)  # No extensio
 pos_data = dict(zip(state_data.state, state_data.pos_percent))
 neg_data = dict(zip(state_data.state, state_data.neg_percent))
 
+# print(pos_data)
+
 # choose a color for each state based on sentiment.
 pos_colors = {}
+neg_colors = {}
 statenames = []
 pos_cmap = plt.cm.Greens  # use 'hot' colormap
+neg_cmap = plt.cm.Reds  # use 'hot' colormap
 
 vmin = 0; vmax = 1  # set range.
 for shapedict in m.states_info:
@@ -96,7 +100,9 @@ for shapedict in m.states_info:
     # skip DC and Puerto Rico.
     if statename not in ['District of Columbia', 'Puerto Rico']:
         pos = pos_data[statename]
+        neg = neg_data[statename]
         pos_colors[statename] = pos_cmap(1. - np.sqrt((pos - vmin) / (vmax - vmin)))[:3]
+        neg_colors[statename] = neg_cmap(1. - np.sqrt((pos - vmin) / (vmax - vmin)))[:3]
     statenames.append(statename)
 # cycle through state names, color each one.
 
@@ -109,7 +115,18 @@ for nshape, seg in enumerate(m.states):
         poly = Polygon(seg, facecolor=color, edgecolor=color)
         ax.add_patch(poly)
 plt.title('Positive Trump Sentiment Across the US')
-plt.savefig("mycoolmap.png")
+plt.savefig("pos_map.png")
+
+# NEGATIVE MAP
+ax = plt.gca()  # get current axes instance
+for nshape, seg in enumerate(m.states):
+    # skip Puerto Rico and DC
+    if statenames[nshape] not in ['District of Columbia', 'Puerto Rico']:
+        color = rgb2hex(neg_colors[statenames[nshape]]) 
+        poly = Polygon(seg, facecolor=color, edgecolor=color)
+        ax.add_patch(poly)
+plt.title('Negative Trump Sentiment Across the US')
+plt.savefig("neg_map.png")
 
 
 # SOURCE: https://stackoverflow.com/questions/39742305/how-to-use-basemap-python-to-plot-us-with-50-states
@@ -134,8 +151,8 @@ plt.figure(figsize=(12, 5))
 fig = plt.figure()
 ax1 = fig.add_subplot(111)
 
-ax1.scatter(story['submission_score'], story['Positive'], s=10, c='b', marker="s", label='Positive')
-ax1.scatter(story['submission_score'], story['Negative'], s=10, c='r', marker="o", label='Negative')
+ax1.scatter(story['story_score'], story['pos_percent'], s=10, c='b', marker="s", label='Positive')
+ax1.scatter(story['story_score'], story['neg_percent'], s=10, c='r', marker="o", label='Negative')
 plt.legend(loc='lower right')
 
 plt.xlabel('President Trump Sentiment by Submission Score')
@@ -157,8 +174,8 @@ plt.figure(figsize=(12, 5))
 fig = plt.figure()
 ax1 = fig.add_subplot(111)
 
-ax1.scatter(story['comment_score'], story['Positive'], s=10, c='b', marker="s", label='Positive')
-ax1.scatter(story['comment_score'], story['Negative'], s=10, c='r', marker="o", label='Negative')
+ax1.scatter(story['comment_score'], story['pos_percent'], s=10, c='b', marker="s", label='Positive')
+ax1.scatter(story['comment_score'], story['neg_percent'], s=10, c='r', marker="o", label='Negative')
 plt.legend(loc='lower right')
 
 plt.xlabel('President Trump Sentiment by Comment Score')
