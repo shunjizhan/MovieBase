@@ -15,6 +15,8 @@ from mpl_toolkits.basemap import Basemap as Basemap
 from matplotlib.colors import rgb2hex
 from matplotlib.patches import Polygon
 
+
+
 """
 IMPORTANT
 This is EXAMPLE code.
@@ -38,15 +40,14 @@ PLOT 1: SENTIMENT OVER TIME (TIME SERIES PLOT)
 
 ts = pd.read_csv("time_data.csv")
 # Remove erroneous row.
-ts = ts[ts['date'] != '2018-12-31']
+ts = ts[ts['which_date'] != '2018-12-31']
 
-plt.figure(figsize=(12,5))
-ts.date = pd.to_datetime(ts['date'], format='%Y-%m-%d')
-ts.set_index(['date'],inplace=True)
+plt.figure(figsize=(12, 5))
+ts.date = pd.to_datetime(ts['which_date'], format='%Y-%m-%d')
+ts.set_index(['which_date'], inplace=True)
 
 ax = ts.plot(title="President Trump Sentiment on /r/politics Over Time",
-        color=['green', 'red'],
-       ylim=(0, 1.05))
+             color=['green', 'red'], ylim=(0, 1.05))
 ax.plot()
 plt.savefig("part1.png")
 
@@ -79,28 +80,28 @@ The rename the files to get rid of the ?raw=true
 
 # Lambert Conformal map of lower 48 states.
 m = Basemap(llcrnrlon=-119, llcrnrlat=22, urcrnrlon=-64, urcrnrlat=49,
-        projection='lcc', lat_1=33, lat_2=45, lon_0=-95)
-shp_info = m.readshapefile('/path_to/st99_d00','states',drawbounds=True)  # No extension specified in path here.
-pos_data = dict(zip(state_data.state, state_data.Positive))
-neg_data = dict(zip(state_data.state, state_data.Negative))
+            projection='lcc', lat_1=33, lat_2=45, lon_0=-95)
+shp_info = m.readshapefile('st99_d00', 'states', drawbounds=True)  # No extension specified in path here.
+pos_data = dict(zip(state_data.state, state_data.pos_percent))
+neg_data = dict(zip(state_data.state, state_data.neg_percent))
 
 # choose a color for each state based on sentiment.
 pos_colors = {}
 statenames = []
-pos_cmap = plt.cm.Greens # use 'hot' colormap
+pos_cmap = plt.cm.Greens  # use 'hot' colormap
 
-vmin = 0; vmax = 1 # set range.
+vmin = 0; vmax = 1  # set range.
 for shapedict in m.states_info:
     statename = shapedict['NAME']
     # skip DC and Puerto Rico.
     if statename not in ['District of Columbia', 'Puerto Rico']:
         pos = pos_data[statename]
-        pos_colors[statename] = pos_cmap(1. - np.sqrt(( pos - vmin )/( vmax - vmin)))[:3]
+        pos_colors[statename] = pos_cmap(1. - np.sqrt((pos - vmin) / (vmax - vmin)))[:3]
     statenames.append(statename)
 # cycle through state names, color each one.
 
 # POSITIVE MAP
-ax = plt.gca() # get current axes instance
+ax = plt.gca()  # get current axes instance
 for nshape, seg in enumerate(m.states):
     # skip Puerto Rico and DC
     if statenames[nshape] not in ['District of Columbia', 'Puerto Rico']:
@@ -129,13 +130,13 @@ PLOT 5A: SENTIMENT BY STORY SCORE
 # submission_score, Positive, Negative
 
 story = pd.read_csv("submission_score.csv")
-plt.figure(figsize=(12,5))
+plt.figure(figsize=(12, 5))
 fig = plt.figure()
 ax1 = fig.add_subplot(111)
 
 ax1.scatter(story['submission_score'], story['Positive'], s=10, c='b', marker="s", label='Positive')
 ax1.scatter(story['submission_score'], story['Negative'], s=10, c='r', marker="o", label='Negative')
-plt.legend(loc='lower right');
+plt.legend(loc='lower right')
 
 plt.xlabel('President Trump Sentiment by Submission Score')
 plt.ylabel("Percent Sentiment")
@@ -152,13 +153,13 @@ PLOT 5B: SENTIMENT BY COMMENT SCORE
 # comment_score, Positive, Negative
 
 story = pd.read_csv("comment_score.csv")
-plt.figure(figsize=(12,5))
+plt.figure(figsize=(12, 5))
 fig = plt.figure()
 ax1 = fig.add_subplot(111)
 
 ax1.scatter(story['comment_score'], story['Positive'], s=10, c='b', marker="s", label='Positive')
 ax1.scatter(story['comment_score'], story['Negative'], s=10, c='r', marker="o", label='Negative')
-plt.legend(loc='lower right');
+plt.legend(loc='lower right')
 
 plt.xlabel('President Trump Sentiment by Comment Score')
 plt.ylabel("Percent Sentiment")
